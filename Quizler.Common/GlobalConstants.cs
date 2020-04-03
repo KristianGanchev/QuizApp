@@ -5,5 +5,8 @@
         public const string SystemName = "Quizler";
 
         public const string AdministratorRoleName = "Administrator";
+
+        public const string TeacherRoleName = "Teacher";
+
     }
 }

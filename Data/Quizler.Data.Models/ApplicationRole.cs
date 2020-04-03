@@ -3,9 +3,8 @@ namespace Quizler.Data.Models
 {
     using System;
 
-    using Quizler.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using Quizler.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

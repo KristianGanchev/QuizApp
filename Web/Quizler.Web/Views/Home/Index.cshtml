@@ -3,7 +3,15 @@
     this.ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="jumbotron container-fluid" style="background-color:#fff">
+        <div class="d-flex justify-content-center">
+            <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
+        </div>
+        <br />
+        <form class="d-flex justify-content-center">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search quizzes of any topic" aria-label="Search">
+            <div class="">
+                <button class="btn" type="submit" style=""><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+    </div>
