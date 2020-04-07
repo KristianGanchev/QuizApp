@@ -19,7 +19,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #461A42">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg p-3 mb-5">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -38,7 +38,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted" style="background-color: #461A42">
+    <footer class="border-top footer text-muted bg-dark">
         <div class="container d-flex justify-content-center">
             &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a class="text-muted" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

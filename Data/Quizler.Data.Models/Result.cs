@@ -1,6 +1,5 @@
 ﻿namespace Quizler.Data.Models
 {
-
     using Quizler.Data.Common.Models;
 
     public class Result : BaseDeletableModel<int>

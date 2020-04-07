@@ -1,7 +1,8 @@
 ﻿namespace Quizler.Data.Models
 {
-    using Quizler.Data.Common.Models;
     using System.Collections.Generic;
+
+    using Quizler.Data.Common.Models;
 
     public class Quiz : BaseDeletableModel<int>
     {
