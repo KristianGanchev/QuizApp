@@ -4,24 +4,46 @@
     var categories = Model.Categories.Select(c => new SelectListItem(c.Name, c.Id.ToString()));
 }
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<form method="post" asp-action="Create">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <label asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" asp-items="categories"></select>
+            <span asp-validation-for="CategoryId"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>*@
+    <div class="content">
+        <div class="login-div">
+            <div class="row center-align">
+                <h5>Create your quiz!</h5>
             </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" asp-items="categories" class="form-control"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            <div class="row">
+                <div class="input-field col s12">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row">
+                    <label asp-for="CategoryId"></label>
+                    <select asp-for="CategoryId" asp-items="categories"></select>
+                    <span asp-validation-for="CategoryId"></span>
             </div>
-        </form>
+            <div class="center-align">
+                <button class="btn waves-effect waves-light orange" type="submit" name="action">
+                    Create quiz
+                </button>
+            </div>
+        </div>
     </div>
-</div>
+</form>
+
+<br />
+<br />
