@@ -3,13 +3,34 @@
     using System.Diagnostics;
 
     using Microsoft.AspNetCore.Mvc;
+    using Quizler.Services.Data;
     using Quizler.Web.ViewModels;
+    using Quizler.Web.ViewModels.Quizzes;
 
     public class HomeController : BaseController
     {
+        private readonly IQuizzesService quizzesService;
+        private readonly ICategoriesService categoriesService;
+
+        public HomeController(IQuizzesService quizzesService, ICategoriesService categoriesService)
+        {
+            this.quizzesService = quizzesService;
+            this.categoriesService = categoriesService;
+        }
+
         public IActionResult Index()
         {
-            return this.View();
+            var quizzesFromDb = this.quizzesService.GetAll<QuizIndexViewModel>();
+
+            var categories = this.categoriesService.GetAll<CategoryIndexViewModel>();
+
+            var quizzes = new QuizzesIndexViewModel()
+            {
+                Quizzes = quizzesFromDb,
+                Categories = categories,
+            };
+
+            return this.View(quizzes);
         }
 
         public IActionResult Privacy()

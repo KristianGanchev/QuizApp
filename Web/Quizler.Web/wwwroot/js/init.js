@@ -13,5 +13,9 @@
         $('.modal').modal();
     });
 
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+    });
+
 })(jQuery); // end of jQuery name space
 

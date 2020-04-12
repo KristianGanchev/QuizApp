@@ -1,9 +1,12 @@
 ﻿namespace Quizler.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Quizler.Data.Common.Repositories;
     using Quizler.Data.Models;
+    using Quizler.Services.Mapping;
 
     public class QuizzesService : IQuizzesService
     {
@@ -30,6 +33,13 @@
             await this.quizRepository.SaveChangesAsync();
 
             return quiz.Id;
+        }
+
+        public IEnumerable<T> GetAll<T>()
+        {
+            IQueryable<Quiz> query = this.quizRepository.All().OrderBy(q => q.CreatedOn);
+
+            return query.To<T>().ToList();
         }
     }
 }

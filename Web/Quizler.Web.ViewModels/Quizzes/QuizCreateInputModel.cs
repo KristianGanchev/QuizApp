@@ -5,6 +5,7 @@
 
     using Quizler.Data.Models;
     using Quizler.Services.Mapping;
+    using Quizler.Web.ViewModels.Questions;
 
     public class QuizCreateInputModel : IMapTo<Quiz>
     {
@@ -19,5 +20,7 @@
         public int CategoryId { get; set; }
 
         public IEnumerable<CategoriesDropdownViewModel> Categories { get; set; }
+
+        public IEnumerable<QuestionInputModel> Questions { get; set; }
     }
 }

@@ -46,6 +46,8 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            services.AddServerSideBlazor();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -111,6 +113,7 @@
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();
+                        endpoints.MapBlazorHub();
                     });
         }
     }
