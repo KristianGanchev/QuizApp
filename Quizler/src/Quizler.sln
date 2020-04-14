@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Common", "Quizler.Common\Quizler.Common.csproj", "{B6E1DE04-DED8-4BAA-8585-29B1A5EC51EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{E89061F4-E646-4F53-8E0E-B06E28B6B0A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E97494D4-226B-452B-912C-5924D1C6C9BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Client", "Web\Client\Quizler.Client.csproj", "{23454796-FD1B-4F84-9BB2-83FCD1855EE8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Server", "Web\Server\Quizler.Server.csproj", "{9C99DBFB-A21C-4994-A48B-AE8FB37C99D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Shared", "Web\Shared\Quizler.Shared.csproj", "{54F920BD-AF6A-4BAB-AA4A-885269B3DCCA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Services.Data", "Services\Quizler.Data.Services\Quizler.Services.Data.csproj", "{2755C324-881A-40CC-8309-598D24741439}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6E1DE04-DED8-4BAA-8585-29B1A5EC51EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E1DE04-DED8-4BAA-8585-29B1A5EC51EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E1DE04-DED8-4BAA-8585-29B1A5EC51EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E1DE04-DED8-4BAA-8585-29B1A5EC51EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23454796-FD1B-4F84-9BB2-83FCD1855EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23454796-FD1B-4F84-9BB2-83FCD1855EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23454796-FD1B-4F84-9BB2-83FCD1855EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23454796-FD1B-4F84-9BB2-83FCD1855EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C99DBFB-A21C-4994-A48B-AE8FB37C99D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C99DBFB-A21C-4994-A48B-AE8FB37C99D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C99DBFB-A21C-4994-A48B-AE8FB37C99D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C99DBFB-A21C-4994-A48B-AE8FB37C99D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54F920BD-AF6A-4BAB-AA4A-885269B3DCCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54F920BD-AF6A-4BAB-AA4A-885269B3DCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54F920BD-AF6A-4BAB-AA4A-885269B3DCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54F920BD-AF6A-4BAB-AA4A-885269B3DCCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2755C324-881A-40CC-8309-598D24741439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2755C324-881A-40CC-8309-598D24741439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2755C324-881A-40CC-8309-598D24741439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2755C324-881A-40CC-8309-598D24741439}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23454796-FD1B-4F84-9BB2-83FCD1855EE8} = {E89061F4-E646-4F53-8E0E-B06E28B6B0A6}
+		{9C99DBFB-A21C-4994-A48B-AE8FB37C99D1} = {E89061F4-E646-4F53-8E0E-B06E28B6B0A6}
+		{54F920BD-AF6A-4BAB-AA4A-885269B3DCCA} = {E89061F4-E646-4F53-8E0E-B06E28B6B0A6}
+		{2755C324-881A-40CC-8309-598D24741439} = {E97494D4-226B-452B-912C-5924D1C6C9BE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08599687-6E3F-48F5-ADE5-93C1B245BE38}
+	EndGlobalSection
+EndGlobal
