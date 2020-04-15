@@ -15,7 +15,6 @@ namespace Quizler.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
-            builder.Services.AddApiAuthorization();
 
             await builder.Build().RunAsync();
         }
