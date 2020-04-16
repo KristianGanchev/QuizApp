@@ -1,13 +1,8 @@
-﻿using Quizler.Data.Models;
-using Quizler.Services.Mapping;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace Quizler.Shared.Models.Account
+﻿namespace Quizler.Shared.Models.Account
 {
-    public class RegisterInputModel : IMapFrom<ApplicationUser>
+    using System.ComponentModel.DataAnnotations;
+
+    public class RegisterRequestModel
     {
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]

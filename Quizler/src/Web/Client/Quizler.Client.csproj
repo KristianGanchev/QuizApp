@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -13,6 +13,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Quizler.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\Answers\" />
+    <Folder Include="Pages\Questions\" />
+    <Folder Include="Pages\Quizzes\" />
   </ItemGroup>
 
 </Project>

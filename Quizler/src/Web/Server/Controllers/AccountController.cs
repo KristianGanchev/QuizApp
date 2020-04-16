@@ -1,20 +1,16 @@
 ﻿namespace Quizler.Server.Controllers
 {
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Options;
-    using Microsoft.IdentityModel.Tokens;
     using Quizler.Common;
     using Quizler.Data.Models;
-    using Quizler.Shared.Jwt;
+    using Quizler.Server.Authentication;
     using Quizler.Shared.Models.Account;
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
+    using Quizler.Shared.Models.Common;
     using System.Linq;
-    using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
 
     [AllowAnonymous]
@@ -22,17 +18,17 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly JwtSettings jwtSettings;
+        private readonly IJwtAuthenticationService authenticationService;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IJwtAuthenticationService authenticationService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.jwtSettings = jwtSettings.Value;
+            this.authenticationService = authenticationService;
         }
 
-         [HttpPost("[action]")]
-        public async Task<ActionResult> Register([FromBody] RegisterInputModel model) 
+        [HttpPost("[action]")]
+        public async Task<ActionResult<RegisterResponseModel>> Register([FromBody] RegisterRequestModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -41,12 +37,18 @@
 
             if (userManager.Users.Any(u => u.Email == model.Email))
             {
-                return BadRequest();
+                return BadRequest(new BadRequestModel
+                {
+                    Message = "This e-mail is already taken!"
+                });
             }
 
             if (userManager.Users.Any(u => u.UserName == model.Username))
             {
-                return BadRequest();
+                return BadRequest(new BadRequestModel
+                {
+                    Message = "This username is already taken!"
+                });
             }
 
             var user = new ApplicationUser
@@ -60,7 +62,10 @@
 
             if (!result.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(new BadRequestModel
+                {
+                    Message = "Something went wrong!"
+                });
             }
 
             if (model.Role == GlobalConstants.TeacherRoleName)
@@ -70,13 +75,14 @@
 
             await signInManager.SignInAsync(user, false);
 
-            var token = this.GenerateJwtToken(user);
+            var token = this.authenticationService.Authenticate(user);
 
-            return Ok(token);
+
+            return new RegisterResponseModel { access_token = token };
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Login([FromBody] LoginInputModel model)
+        public async Task<ActionResult<LoginResponseModel>> Login([FromBody] LoginRequestModel model)
         {
             if(!this.ModelState.IsValid)
             {
@@ -87,43 +93,26 @@
 
             if (user ==null)
             {
-                return BadRequest();
+                return BadRequest(new BadRequestModel
+                {
+                    Message = "Incorrect e-mail or password."
+                });
             }
 
             var result = this.signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
-            if (result.Result.Succeeded)
+            if (!result.Result.Succeeded)
             {
-                var token = GenerateJwtToken(user);
 
-                return Ok(token);
+                return BadRequest(new BadRequestModel
+                {
+                    Message = "Incorrect e-mail or password."
+                });
             }
 
-            return BadRequest();
-        }
+            var token = this.authenticationService.Authenticate(user);
 
-        private string GenerateJwtToken(ApplicationUser user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.Role,
-                            this.userManager.IsInRoleAsync(user, "Administrator")
-                                .GetAwaiter()
-                                .GetResult() ? "Administrator" : "User")
-                    }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return new LoginResponseModel { access_token = token };
         }
     }
 }

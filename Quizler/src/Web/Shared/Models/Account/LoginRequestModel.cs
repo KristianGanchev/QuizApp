@@ -1,9 +1,7 @@
 ﻿namespace Quizler.Shared.Models.Account
 {
-    using Quizler.Data.Models;
-    using Quizler.Services.Mapping;
     using System.ComponentModel.DataAnnotations;
-    public class LoginInputModel : IMapFrom<ApplicationUser>
+    public class LoginRequestModel 
     {
         [Required]
         [EmailAddress]

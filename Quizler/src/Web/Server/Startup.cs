@@ -1,25 +1,22 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Linq;
-using Quizler.Data;
-using Microsoft.EntityFrameworkCore;
-using Quizler.Shared.Jwt;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Quizler.Data.Models;
-using Quizler.Data.Common.Repositories;
-using Quizler.Data.Common;
-using Quizler.Data.Repositories;
-using Quizler.Data.Seeding;
-
 namespace Quizler.Server
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Quizler.Data;
+    using Microsoft.EntityFrameworkCore;
+    using System.Text;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.IdentityModel.Tokens;
+    using Quizler.Data.Models;
+    using Quizler.Data.Common.Repositories;
+    using Quizler.Data.Common;
+    using Quizler.Data.Repositories;
+    using Quizler.Data.Seeding;
+    using Quizler.Server.Authentication;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -61,7 +58,7 @@ namespace Quizler.Server
                 };
             });
 
-         
+
 
             services.AddControllers();
 
@@ -70,6 +67,7 @@ namespace Quizler.Server
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddTransient<IJwtAuthenticationService, JwtAuthenticationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
