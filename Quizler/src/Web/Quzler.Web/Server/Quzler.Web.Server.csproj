@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\Quizler.Data\Quizler.Data.csproj" />
+    <ProjectReference Include="..\..\..\Services\Quizler.Services.Data\Quizler.Services.Data.csproj" />
+    <ProjectReference Include="..\..\..\Services\Quizler.Services.Mapping\Quizler.Services.Mapping.csproj" />
     <ProjectReference Include="..\Client\Quzler.Web.Client.csproj" />
     <ProjectReference Include="..\Shared\Quzler.Web.Shared.csproj" />
   </ItemGroup>

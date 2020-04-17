@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
 namespace Quzler.Web.Client
 {
@@ -17,6 +18,7 @@ namespace Quzler.Web.Client
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddApiAuthorization();
 
+           
             await builder.Build().RunAsync();
         }
     }

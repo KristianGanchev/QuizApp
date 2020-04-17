@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Services.Data.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Web.Tests", "Tests\Quizler.Web.Tests\Quizler.Web.Tests.csproj", "{3EE06C6E-C8F3-418A-A309-8AC81976A074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quzler.Web.Server", "Web\Quzler.Web\Server\Quzler.Web.Server.csproj", "{A8D701F7-69BB-4960-8BC9-0B81BB8CCA90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quzler.Web.Server", "Web\Quzler.Web\Server\Quzler.Web.Server.csproj", "{A8D701F7-69BB-4960-8BC9-0B81BB8CCA90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quzler.Web.Client", "Web\Quzler.Web\Client\Quzler.Web.Client.csproj", "{FF053DBB-C0FA-4C57-8CC7-D065499A3003}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quzler.Web.Client", "Web\Quzler.Web\Client\Quzler.Web.Client.csproj", "{FF053DBB-C0FA-4C57-8CC7-D065499A3003}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quzler.Web.Shared", "Web\Quzler.Web\Shared\Quzler.Web.Shared.csproj", "{940F61E3-CE83-4180-A476-2D82C4CBE158}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quzler.Web.Shared", "Web\Quzler.Web\Shared\Quzler.Web.Shared.csproj", "{940F61E3-CE83-4180-A476-2D82C4CBE158}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

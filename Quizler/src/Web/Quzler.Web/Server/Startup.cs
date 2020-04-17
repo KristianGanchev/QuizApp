@@ -1,25 +1,24 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Linq;
-using Quizler.Data;
-using Quizler.Data.Models;
-using Quizler.Data.Common.Repositories;
-using Quizler.Data.Repositories;
-using Quizler.Data.Common;
-using Quizler.Data.Seeding;
-
 namespace Quzler.Web.Server
 {
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Quizler.Data;
+    using Quizler.Data.Models;
+    using Quizler.Data.Common.Repositories;
+    using Quizler.Data.Repositories;
+    using Quizler.Data.Common;
+    using Quizler.Data.Seeding;
+    using Quizler.Services.Mapping;
+    using Quzler.Web.Shared.Quizzes;
+    using System.Reflection;
+    using Quizler.Services.Data;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -52,6 +51,9 @@ namespace Quzler.Web.Server
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+
+            services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IQuizzesService, QuizzesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +61,8 @@ namespace Quzler.Web.Server
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
+                AutoMapperConfig.RegisterMappings(typeof(QuizCreateModel).GetTypeInfo().Assembly);
+
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                 if (env.IsDevelopment())

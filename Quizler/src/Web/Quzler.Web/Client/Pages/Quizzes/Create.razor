@@ -1,0 +1,52 @@
+﻿@page "/quizzes/create"
+
+@using Quzler.Web.Shared.Categories
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+
+@if (categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<form>
+    <div class="form-group col-md-4">
+        <label for="Name">Quiz name</label>
+        <input type="text" class="form-control" id="QuizName" placeholder="Give your quiz a name">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="Name">Select your category</label>
+        <select id="categoryName" class="form-control">
+            @foreach (var categorie in categories)
+            {
+                <option>@categorie.Name</option>
+            }
+        </select>
+    </div>
+    <button type="button" class="btn btn-primary">Create quiz</button>
+</form>
+}
+
+@code {
+    private CategorieViewModel[] categories;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(Navigation.BaseUri);
+
+        Console.WriteLine(httpClient);
+        Console.WriteLine(httpClient.BaseAddress = new Uri(Navigation.BaseUri));
+
+        categories = await httpClient.GetJsonAsync<CategorieViewModel[]>("Categories/GetAll");
+
+        Console.WriteLine(categories);
+
+    }
+
+}
