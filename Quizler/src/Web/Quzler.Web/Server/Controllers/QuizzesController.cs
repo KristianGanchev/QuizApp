@@ -7,6 +7,7 @@ namespace Quzler.Web.Server.Controllers
     using Quizler.Data.Models;
     using Quizler.Services.Data;
     using Quzler.Web.Shared.Quizzes;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     //[Authorize]
@@ -25,14 +26,14 @@ namespace Quzler.Web.Server.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<int>> Create([FromBody] QuizCreateModel model)
         {
-            var user = await userManager.FindByIdAsync(model.UserId);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (!this.ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var quizId = await this.quizzesService.CreateAsync(model.Name, model.CategorieId, user.Id);
+            var quizId = await this.quizzesService.CreateAsync(model.Name, model.CategorieId, userId);
 
             return quizId;
         }

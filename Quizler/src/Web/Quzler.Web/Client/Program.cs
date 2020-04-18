@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
+using Quzler.Web.Client.Services;
 
 namespace Quzler.Web.Client
 {
@@ -18,7 +19,8 @@ namespace Quzler.Web.Client
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddApiAuthorization();
 
-           
+            builder.Services.AddSingleton<IApiService, ApiService>();
+
             await builder.Build().RunAsync();
         }
     }
