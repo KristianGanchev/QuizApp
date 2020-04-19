@@ -1,0 +1,11 @@
+﻿@page "/quizzes/edit/{QuizId:int}/{QuizName}"
+
+<h3>Edit</h3>
+
+@code {
+    [Parameter]
+    public int QuizId { get; set; }
+
+    [Parameter]
+    public string QuizName { get; set; }
+}

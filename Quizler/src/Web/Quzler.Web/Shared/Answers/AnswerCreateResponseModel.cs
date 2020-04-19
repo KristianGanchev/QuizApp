@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Quzler.Web.Shared.Answers
 {
-    class AnswerRequestModel
+    public class AnswerCreateResponseModel
     {
+        public int Id { get; set; }
+
+        public string Text { get; set; }
     }
 }

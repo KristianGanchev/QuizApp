@@ -23,8 +23,7 @@ namespace Quzler.Web.Server.Controllers
         }
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
-        public async Task<ActionResult<int>> Create([FromBody] QuizCreateModel model)
+        public async Task<ActionResult<QuizCreateResponseModel>> Create([FromBody] QuizCreateRequestModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -35,7 +34,15 @@ namespace Quzler.Web.Server.Controllers
 
             var quizId = await this.quizzesService.CreateAsync(model.Name, model.CategorieId, userId);
 
-            return quizId;
+            return new QuizCreateResponseModel { Id = quizId, Name = model.Name};
         }
+
+        //[HttpGet("[acton]")]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<QuizEditResponseModel>> GetById(int id)
+        //{
+        //    var quizId = this.quizzesService.GetByIdAsync(id);
+
+        //}
     }
 }

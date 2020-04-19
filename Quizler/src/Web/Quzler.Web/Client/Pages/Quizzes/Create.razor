@@ -2,9 +2,6 @@
 
 @using Quzler.Web.Shared.Categories
 @using Quzler.Web.Shared.Quizzes
-@using System.Linq 
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 
 @if (categories == null)
@@ -13,30 +10,32 @@
 }
 else
 {
-<EditForm Model="model" OnValidSubmit="Submit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group col-md-4">
-        <label for="Name">Quiz name</label>
-        <InputText class="form-control" @bind-Value="model.Name" placeholder="Give your quiz a name" />
-    </div>
-    <div class="form-group col-md-4">
-        <label for="Name">Select your category</label>
-        <InputSelectNumber @bind-Value="model.CategorieId" id="categoryName" class="form-control">
-            <option value="0">Select a category</option>
-            @foreach (var categorie in categories)
-            {
-                <option value="@categorie.Id">@categorie.Name</option>
-            }
-        </InputSelectNumber>
-    </div>
-    <button type="button" class="btn btn-primary">Create quiz</button>
-</EditForm>
+                <EditForm Model="model" OnValidSubmit="Submit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+                        <label for="Name">Quiz name</label>
+                        <InputText class="form-control" @bind-Value="model.Name" placeholder="Give your quiz a name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Name">Select your category</label>
+                        <InputSelectNumber @bind-Value="model.CategorieId" id="categoryName" class="form-control">
+                            <option value="0">Select a category</option>
+                            @foreach (var categorie in categories)
+                                {
+                                <option value="@categorie.Id">@categorie.Name</option>
+                                }
+                       
+                        </InputSelectNumber>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create quiz</button>
+                </EditForm>
 }
 
 @code {
-    private CategorieViewModel[] categories;
-    readonly QuizCreateModel model = new QuizCreateModel();
+    private CategorieResponseModel[] categories;
+    readonly QuizCreateRequestModel model = new QuizCreateRequestModel();
+    QuizCreateResponseModel response;
 
 
 
@@ -47,11 +46,11 @@ else
 
     async Task Submit()
     {
-        //this.HttpClient.BaseAddress = new Uri(this.Navigation.BaseUri);
+        this.response = await this.ApiService.CreateQuiz(model);
 
-        //var response = await this.HttpClient.PostAsJsonAsync("/quizzes/create", model);
-        //var responseObject = await response.Content.ReadFromJsonAsync<QuizCreateModel>();
-
-        //return responseObject;
+        if (response != null)
+        {
+            this.Navigation.NavigateTo($"quizzes/edit/{this.response.Id}/{this.response.Name}");
+        }
     }
 }

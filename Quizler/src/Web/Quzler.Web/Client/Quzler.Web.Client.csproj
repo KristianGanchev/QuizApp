@@ -17,5 +17,8 @@
     <ProjectReference Include="..\..\..\Data\Quizler.Data.Models\Quizler.Data.Models.csproj" />
     <ProjectReference Include="..\Shared\Quzler.Web.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\Answers\" />
+  </ItemGroup>
 
 </Project>

@@ -10,7 +10,7 @@
 
     public class QuizzesService : IQuizzesService
     {
-        private readonly Quizler.Data.Common.Repositories.IDeletableEntityRepository<Quiz> quizRepository;
+        private readonly IDeletableEntityRepository<Quiz> quizRepository;
 
         public QuizzesService(IDeletableEntityRepository<Quiz> quizRepository)
         {
@@ -33,6 +33,13 @@
             await this.quizRepository.SaveChangesAsync();
 
             return quiz.Id;
+        }
+
+        public async Task<int> GetByIdAsync(int id)
+        {
+          var idFormDb = await this.quizRepository.GetByIdWithDeletedAsync(id);
+
+            return idFormDb.Id;
         }
 
         public IEnumerable<T> GetAll<T>()

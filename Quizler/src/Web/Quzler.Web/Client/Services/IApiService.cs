@@ -1,10 +1,12 @@
 ﻿namespace Quzler.Web.Client.Services
 {
     using Quzler.Web.Shared.Categories;
-    using System.Collections.Generic;
+    using Quzler.Web.Shared.Quizzes;
     using System.Threading.Tasks;
     public interface IApiService
     {
-        public Task<CategorieViewModel[]> GetCategoriesNames();
+        public Task<CategorieResponseModel[]> GetCategoriesNames();
+
+        Task<QuizCreateResponseModel> CreateQuiz(QuizCreateRequestModel request);
     }
 }

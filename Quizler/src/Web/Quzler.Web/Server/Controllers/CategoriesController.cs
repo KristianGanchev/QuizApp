@@ -20,11 +20,10 @@ namespace Quzler.Web.Server.Controllers
         }
 
         [HttpGet("[action]")]
-        [AllowAnonymous]
-        public IEnumerable<CategorieViewModel> GetAll() 
+        public IEnumerable<CategorieResponseModel> GetAll() 
         {
 
-            return this.categoriesService.GetAll<CategorieViewModel>().ToArray();
+            return this.categoriesService.GetAll<CategorieResponseModel>().ToArray();
 
         }
     }

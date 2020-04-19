@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Quzler.Web.Shared.Categories
 {
-    public class CategorieViewModel : IMapFrom<Category>
+    public class CategorieResponseModel : IMapFrom<Category>
     {
         public int Id { get; set; }
 

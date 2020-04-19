@@ -54,6 +54,8 @@ namespace Quzler.Web.Server
 
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IQuizzesService, QuizzesService>();
+            services.AddTransient<IQuestionsServices, QuestionsServices>();
+            services.AddTransient<IAnswersServices, AnswersServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +63,7 @@ namespace Quzler.Web.Server
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                AutoMapperConfig.RegisterMappings(typeof(QuizCreateModel).GetTypeInfo().Assembly);
+                AutoMapperConfig.RegisterMappings(typeof(QuizCreateRequestModel).GetTypeInfo().Assembly);
 
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
