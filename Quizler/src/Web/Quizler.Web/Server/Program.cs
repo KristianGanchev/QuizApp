@@ -7,11 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-<<<<<<< HEAD:Quizler/src/Web/Quizler.Web/Server/Program.cs
 namespace Quizler.Web.Server
-=======
-namespace Quzler.Web.Server
->>>>>>> 3045bb8d6e3ffefd1bdcd0f7a1d568e828332ccb:Quizler/src/Web/Quzler.Web/Server/Program.cs
 {
     public class Program
     {

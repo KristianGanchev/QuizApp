@@ -37,19 +37,11 @@
             return quiz.Id;
         }
 
-<<<<<<< HEAD
         public T GetById<T>(int id) 
         {
             var quiz = this.quizRepository.All().Where(q => q.Id == id).To<T>().FirstOrDefault();
 
             return quiz;
-=======
-        public async Task<int> GetByIdAsync(int id)
-        {
-          var idFormDb = await this.quizRepository.GetByIdWithDeletedAsync(id);
-
-            return idFormDb.Id;
->>>>>>> 3045bb8d6e3ffefd1bdcd0f7a1d568e828332ccb
         }
 
         public IEnumerable<T> GetAll<T>()

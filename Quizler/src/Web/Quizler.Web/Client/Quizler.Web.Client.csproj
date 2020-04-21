@@ -13,22 +13,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0-preview3.20168.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0-preview3.20168.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
-<<<<<<< HEAD:Quizler/src/Web/Quizler.Web/Client/Quizler.Web.Client.csproj
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0-preview5.20210.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Quizler.Web.Shared.csproj" />
-=======
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.0-preview3.20168.3" />
-    <PackageReference Include="System.Net.Http.Json" Version="3.2.0-preview5.20210.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Data\Quizler.Data.Models\Quizler.Data.Models.csproj" />
-    <ProjectReference Include="..\Shared\Quzler.Web.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\Answers\" />
->>>>>>> 3045bb8d6e3ffefd1bdcd0f7a1d568e828332ccb:Quizler/src/Web/Quzler.Web/Client/Quzler.Web.Client.csproj
   </ItemGroup>
 
 </Project>

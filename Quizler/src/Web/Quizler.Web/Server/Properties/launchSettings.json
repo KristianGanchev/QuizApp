@@ -4,13 +4,8 @@
       "windowsAuthentication": false,
       "anonymousAuthentication": true,
       "iisExpress": {
-<<<<<<< HEAD:Quizler/src/Web/Quizler.Web/Server/Properties/launchSettings.json
         "applicationUrl": "http://localhost:55645",
         "sslPort": 44332
-=======
-        "applicationUrl": "http://localhost:57568",
-        "sslPort": 44321
->>>>>>> 3045bb8d6e3ffefd1bdcd0f7a1d568e828332ccb:Quizler/src/Web/Quzler.Web/Server/Properties/launchSettings.json
       }
     },
     "profiles": {
@@ -22,11 +17,7 @@
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
       },
-<<<<<<< HEAD:Quizler/src/Web/Quizler.Web/Server/Properties/launchSettings.json
       "Quizler.Web.Server": {
-=======
-      "Quzler.Web.Server": {
->>>>>>> 3045bb8d6e3ffefd1bdcd0f7a1d568e828332ccb:Quizler/src/Web/Quzler.Web/Server/Properties/launchSettings.json
         "commandName": "Project",
         "launchBrowser": true,
         "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
