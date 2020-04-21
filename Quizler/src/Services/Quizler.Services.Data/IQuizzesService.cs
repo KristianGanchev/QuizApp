@@ -10,6 +10,8 @@
 
         T GetById<T>(int id);
 
+        Task<int> GetByIdAsync(int id);
+
         IEnumerable<T> GetAll<T>();
     }
 }
