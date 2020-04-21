@@ -1,2 +1,2 @@
 # Quizler
-A simple quiz system written in webassembly 
+A simple quiz system written in Blazor webassembly 
