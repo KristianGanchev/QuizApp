@@ -1,0 +1,22 @@
+﻿
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @Username!
+        <a href="LogOut">Log out</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Register">Register</a>
+        <a href="Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code
+{
+    public string Username;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Username = await this.storage.GetItemAsync<string>("userName");
+    }
+}

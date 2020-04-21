@@ -10,14 +10,14 @@
 
     public class QuizzesService : IQuizzesService
     {
-        private readonly Quizler.Data.Common.Repositories.IDeletableEntityRepository<Quiz> quizRepository;
+        private readonly IDeletableEntityRepository<Quiz> quizRepository;
 
         public QuizzesService(IDeletableEntityRepository<Quiz> quizRepository)
         {
             this.quizRepository = quizRepository;
         }
 
-        public async Task<int> CreateAsync(string name, int categoryId, string userId)
+        public async Task<int> CreateAsync(string name, int categoryId, ApplicationUser user)
         {
             var imageUrl = "/images/default_quiz_image.png";
 
@@ -26,13 +26,22 @@
                 Name = name,
                 ImageUrl = imageUrl,
                 CategoryId = categoryId,
-                CreatorId = userId,
+                CreatorId = user.Id
             };
 
             await this.quizRepository.AddAsync(quiz);
             await this.quizRepository.SaveChangesAsync();
 
+          //  user.Quizzes.Add(quiz);
+
             return quiz.Id;
+        }
+
+        public T GetById<T>(int id) 
+        {
+            var quiz = this.quizRepository.All().Where(q => q.Id == id).To<T>().FirstOrDefault();
+
+            return quiz;
         }
 
         public IEnumerable<T> GetAll<T>()
