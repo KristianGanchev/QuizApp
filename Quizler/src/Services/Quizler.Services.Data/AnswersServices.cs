@@ -2,6 +2,9 @@
 {
     using Quizler.Data.Common.Repositories;
     using Quizler.Data.Models;
+    using Quizler.Services.Mapping;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class AnswersServices : IAnswersServices
@@ -33,6 +36,13 @@
           //  question.Answers.Add(answer);
 
             return answer.Id;
+        }
+
+        public IEnumerable<T> GetAll<T>(int id)
+        {
+            var query = this.answerRepository.All().Where(a => a.QuestionId == id);
+
+            return query.To<T>().ToList();
         }
     }
 }

@@ -94,6 +94,11 @@
 
 @code
 {
+    [Parameter]
+    public int QuizId { get; set; }
+
+    [Parameter]
+    public EventCallback<int> QuizIdChanged { get; set; }
 
     readonly QuestionBindingModel questionModel = new QuestionBindingModel
     {
@@ -108,17 +113,13 @@
 
     async Task Submit()
     {
-       // var quizId = this.GetQuizId();
-
         var questionRequest = new QuestionRequest
         {
             Text = questionModel.Text,
             Points = questionModel.Points,
-           // QuizId = quizId,
+            QuizId = this.QuizId,
         };
 
-        //Console.WriteLine(QuizId);
-        //Console.WriteLine(QuizName);
 
         var questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/create", questionRequest);
 
@@ -157,7 +158,5 @@
         };
 
         await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", fourthAnswers);
-
-        // this.Navigation.NavigateTo($"quizzes/edit/{this.QuizId}/{this.QuizName}");
     }
 }

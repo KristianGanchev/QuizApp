@@ -136,6 +136,11 @@ app {
     top: 0.5rem;
 }
 
+.vl {
+    border-left: 6px solid green;
+    height: 500px;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;

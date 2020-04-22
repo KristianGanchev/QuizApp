@@ -27,5 +27,7 @@
 
         [Required]
         public AnswerRequest FourthAnswer { get; set; }
+
+        public int QuizId { get; set; }
     }
 }

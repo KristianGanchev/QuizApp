@@ -50,5 +50,12 @@
 
             return query.To<T>().ToList();
         }
+
+        public IEnumerable<T> GetByCategory<T>(string categoryName)
+        {
+            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.Category.Name == categoryName).Take(5);
+
+            return query.To<T>().ToList();
+        }
     }
 }

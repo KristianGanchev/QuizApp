@@ -11,5 +11,7 @@
         T GetById<T>(int id);
 
         IEnumerable<T> GetAll<T>();
+
+        IEnumerable<T> GetByCategory<T>(string categoryName);
     }
 }

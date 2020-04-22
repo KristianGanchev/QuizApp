@@ -28,5 +28,14 @@ namespace Quizler.Web.Server.Controllers
 
             return new AnswerResponse { Id = asnwerId, Text = model.Text };
         }
+
+        [HttpGet("[action]/{questionId}")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<AnswerResponse>> GetAll(int questionId)
+        {
+
+            return this.answersServices.GetAll<AnswerResponse>(questionId).ToArray();
+
+        }
     }
 }

@@ -1,0 +1,28 @@
+﻿@using Quizler.Web.Shared.Models.Questions
+
+@foreach (var question in this.Questions)
+{
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><strong>@question.Text</strong></h5>
+                <hr />
+                <div class="container">
+                    <div class="row">
+                        @foreach (var answer in question.Answers)
+                        {
+                            <h4>@answer.Text </h4>
+                        }
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary">Edit</a>
+            </div>
+        </div>
+    <br />
+}
+
+
+@code
+{
+    [Parameter]
+    public QuestionResponse[] Questions { get; set; }
+}
