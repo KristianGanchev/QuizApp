@@ -3,6 +3,8 @@
 @using Quizler.Web.Shared.Models.Questions
 @using Quizler.Web.Shared.Models.Answers
 
+@inject IAppState State
+
 @page "/quizzes/edit/{QuizId:int}/{QuizName}"
 
 @if (quiz == null)
@@ -24,18 +26,24 @@ else
                 </div>
 
                 <br />
-
-                <CreateQuestion @bind-QuizId="this.QuizId" />
+                <EditForm Model="questionModel" OnValidSubmit="Submit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <CreateQuestion QuestionModel="questionModel"/>
+                </EditForm>
             </div>
             <div class="vl"></div>
             <div class="col">
                 @if (this.questions == null)
                 {
-                    <p><em>Loading...</em></p>
+                    <p>Create your first question</p>
                 }
                 else
                 {
-                    <QuestionEdit Questions="@this.questions" />
+                    foreach (var question in questions)
+                    {
+                        <QuestionEdit Question="@question" />
+                    }
                 }
             </div>
         </div>
@@ -51,11 +59,82 @@ else
 
     private QuizEditResponse quiz = new QuizEditResponse();
 
-    private QuestionResponse[] questions;
+    public QuestionResponse[] questions;
+
+    readonly QuestionBindingModel questionModel = new QuestionBindingModel
+    {
+        FirstAnswer = new AnswerRequest(),
+        SecondAnswer = new AnswerRequest(),
+        ThirdAnswer = new AnswerRequest(),
+        FourthAnswer = new AnswerRequest(),
+    };
 
     protected override async Task OnInitializedAsync()
     {
         quiz = await this.HttpClient.GetJsonAsync<QuizEditResponse>($"quizzes/{QuizId}");
-        questions = await this.HttpClient.GetJsonAsync<QuestionResponse[]>($"questions/getall/{QuizId}");
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            questions = await this.HttpClient.GetJsonAsync<QuestionResponse[]>($"questions/getall/{QuizId}");
+        }
+    }
+
+
+    async Task Submit()
+    {
+        var questionRequest = new QuestionRequest
+        {
+            Text = questionModel.Text,
+            Points = questionModel.Points,
+            QuizId = this.QuizId,
+        };
+
+
+        var questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/create", questionRequest);
+
+        var firstAnswers = new AnswerRequest
+        {
+            Text = questionModel.FirstAnswer.Text,
+            IsCorrect = questionModel.FirstAnswer.IsCorrect,
+            QuestionId = questionResponse.Id,
+        };
+
+        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", firstAnswers);
+
+        var secondAnswer = new AnswerRequest
+        {
+            Text = questionModel.SecondAnswer.Text,
+            IsCorrect = questionModel.SecondAnswer.IsCorrect,
+            QuestionId = questionResponse.Id,
+        };
+
+        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", secondAnswer);
+
+        var thirdAnswers = new AnswerRequest
+        {
+            Text = questionModel.ThirdAnswer.Text,
+            IsCorrect = questionModel.ThirdAnswer.IsCorrect,
+            QuestionId = questionResponse.Id,
+        };
+
+        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", thirdAnswers);
+
+        var fourthAnswers = new AnswerRequest
+        {
+            Text = questionModel.FourthAnswer.Text,
+            IsCorrect = questionModel.FourthAnswer.IsCorrect,
+            QuestionId = questionResponse.Id,
+        };
+
+        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", fourthAnswers);
+    }
+
+    private void OnLoadedData()
+    {
+        StateHasChanged();
     }
 }

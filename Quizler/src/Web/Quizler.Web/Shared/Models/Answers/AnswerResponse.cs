@@ -1,11 +1,8 @@
-﻿using Quizler.Data.Models;
-using Quizler.Services.Mapping;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Quizler.Web.Shared.Models.Answers
+﻿namespace Quizler.Web.Shared.Models.Answers
 {
+    using Quizler.Data.Models;
+    using Quizler.Services.Mapping;
+
     public class AnswerResponse : IMapFrom<Answer>
     {
         public int Id { get; set; }

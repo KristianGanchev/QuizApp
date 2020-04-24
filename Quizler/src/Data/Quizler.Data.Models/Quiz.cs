@@ -9,6 +9,7 @@
         public Quiz()
         {
             this.Questions = new HashSet<Question>();
+            this.Results = new HashSet<Result>();
         }
 
         public string Name { get; set; }
@@ -26,5 +27,7 @@
         public virtual Category Category { get; set; }
 
         public virtual ICollection<Question> Questions { get; set; }
+
+        public virtual ICollection<Result> Results { get; set; }
     }
 }

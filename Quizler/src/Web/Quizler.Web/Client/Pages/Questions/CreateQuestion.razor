@@ -1,162 +1,119 @@
-﻿
-@using Quizler.Web.Shared.Models.Questions
+﻿@using Quizler.Web.Shared.Models.Questions
 @using Quizler.Web.Shared.Models.Answers
 @using Quizler.Web.Client.Pages.Quizzes
 
 
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModalCenter">
+<button type="button" class="btn btn-primary btn-lg" @onclick="() => Open()">
     Create question
 </button>
 
 
-<EditForm Model="questionModel" OnValidSubmit="Submit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Add question</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <InputText class="form-control" @bind-Value="questionModel.Text" placeholder="Write yor question here" />
-                            </div>
-                            <div class="col-md-4 ml-auto">
-                                <InputNumber @bind-Value="@questionModel.Points" class="form-control" placeholder="Add poins" />
-                            </div>
+<div class="modal  @ModalClass" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Add question</h5>
+                <button type="button" class="close" @onclick="() => Close()" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <InputText class="form-control" @bind-Value="QuestionModel.Text" placeholder="Write yor question here" />
                         </div>
-                        <hr />
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <InputText @bind-Value="@questionModel.FirstAnswer.Text" class="form-control" placeholder="Answer option" />
-                            </div>
-                            <div class="col-md-2 ml-auto">
-                                <div class="custom-control custom-checkbox">
-                                    <InputCheckbox @bind-Value="@questionModel.FirstAnswer.IsCorrect" class="custom-control-input" id="customCheck1" />
-                                    <label class="custom-control-label" for="customCheck1"></label>
-                                </div>
-                            </div>
+                        <div class="col-md-4 ml-auto">
+                            <InputNumber @bind-Value="@QuestionModel.Points" class="form-control" placeholder="Add poins" />
                         </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <InputText @bind-Value="@questionModel.SecondAnswer.Text" class="form-control" placeholder="Answer option" />
-                            </div>
-                            <div class="col-md-2 ml-auto">
-                                <div class="custom-control custom-checkbox">
-                                    <InputCheckbox @bind-Value="@questionModel.SecondAnswer.IsCorrect" class="custom-control-input" id="customCheck2" />
-                                    <label class="custom-control-label" for="customCheck2"></label>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <InputText @bind-Value="@questionModel.ThirdAnswer.Text" class="form-control" placeholder="Answer option" />
-                            </div>
-                            <div class="col-md-2 ml-auto">
-                                <div class="custom-control custom-checkbox">
-                                    <InputCheckbox @bind-Value="@questionModel.ThirdAnswer.IsCorrect" class="custom-control-input" id="customCheck3" />
-                                    <label class="custom-control-label" for="customCheck3"></label>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <InputText @bind-Value="@questionModel.FourthAnswer.Text" class="form-control" placeholder="Answer option" />
-                            </div>
-                            <div class="col-md-2 ml-auto">
-                                <div class="custom-control custom-checkbox">
-                                    <InputCheckbox @bind-Value="@questionModel.FourthAnswer.IsCorrect" class="custom-control-input" id="customCheck4" />
-                                    <label class="custom-control-label" for="customCheck4"></label>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
                     </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@QuestionModel.FirstAnswer.Text" class="form-control" placeholder="Answer option" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@QuestionModel.FirstAnswer.IsCorrect" class="custom-control-input" id="customCheck1" />
+                                <label class="custom-control-label" for="customCheck1"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@QuestionModel.SecondAnswer.Text" class="form-control" placeholder="Answer option" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@QuestionModel.SecondAnswer.IsCorrect" class="custom-control-input" id="customCheck2" />
+                                <label class="custom-control-label" for="customCheck2"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@QuestionModel.ThirdAnswer.Text" class="form-control" placeholder="Answer option" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@QuestionModel.ThirdAnswer.IsCorrect" class="custom-control-input" id="customCheck3" />
+                                <label class="custom-control-label" for="customCheck3"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@QuestionModel.FourthAnswer.Text" class="form-control" placeholder="Answer option" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@QuestionModel.FourthAnswer.IsCorrect" class="custom-control-input" id="customCheck4" />
+                                <label class="custom-control-label" for="customCheck4"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save question</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="() => Close()" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" @onclick="() => Close()">Save question</button>
             </div>
         </div>
     </div>
-</EditForm>
+</div>
 
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
 
 @code
 {
-    [Parameter]
-    public int QuizId { get; set; }
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
 
     [Parameter]
-    public EventCallback<int> QuizIdChanged { get; set; }
+    public QuestionBindingModel QuestionModel { get; set; }
 
-    readonly QuestionBindingModel questionModel = new QuestionBindingModel
+    public void Open()
     {
-        FirstAnswer = new AnswerRequest(),
-        SecondAnswer = new AnswerRequest(),
-        ThirdAnswer = new AnswerRequest(),
-        FourthAnswer = new AnswerRequest(),
-    };
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
 
-
-    QuestionResponse questionResponse;
-
-    async Task Submit()
+    public void Close()
     {
-        var questionRequest = new QuestionRequest
-        {
-            Text = questionModel.Text,
-            Points = questionModel.Points,
-            QuizId = this.QuizId,
-        };
-
-
-        var questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/create", questionRequest);
-
-        var firstAnswers = new AnswerRequest
-        {
-            Text = questionModel.FirstAnswer.Text,
-            IsCorrect = questionModel.FirstAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", firstAnswers);
-
-        var secondAnswer = new AnswerRequest
-        {
-            Text = questionModel.SecondAnswer.Text,
-            IsCorrect = questionModel.SecondAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", secondAnswer);
-
-        var thirdAnswers = new AnswerRequest
-        {
-            Text = questionModel.ThirdAnswer.Text,
-            IsCorrect = questionModel.ThirdAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", thirdAnswers);
-
-        var fourthAnswers = new AnswerRequest
-        {
-            Text = questionModel.FourthAnswer.Text,
-            IsCorrect = questionModel.FourthAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", fourthAnswers);
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
     }
 }

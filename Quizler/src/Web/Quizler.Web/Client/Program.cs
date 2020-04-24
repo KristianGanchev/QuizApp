@@ -25,6 +25,7 @@ namespace Quizler.Web.Client
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IApiService, ApiService>();
+            builder.Services.AddScoped<IAppState, AppState>();
 
             await builder.Build().RunAsync();
         }

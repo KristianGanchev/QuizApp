@@ -76,6 +76,7 @@ namespace Quizler.Web.Server
             services.AddTransient<IQuizzesService, QuizzesService>();
             services.AddTransient<IQuestionsServices, QuestionsServices>();
             services.AddTransient<IAnswersServices, AnswersServices>();
+            services.AddTransient<IResultService, ResultService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

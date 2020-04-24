@@ -45,5 +45,14 @@
 
             return quiz;
         }
+
+        [HttpGet("[action]/{id}")]
+        [AllowAnonymous]
+        public ActionResult<QuizPlayResponse> Play(int id)
+        {
+            var quiz = this.quizzesService.GetById<QuizPlayResponse>(id);
+
+            return quiz;
+        }
     }
 }

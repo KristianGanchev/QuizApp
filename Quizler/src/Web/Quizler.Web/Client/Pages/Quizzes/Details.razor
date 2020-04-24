@@ -1,0 +1,35 @@
+﻿@using Quizler.Web.Shared.Models.Quizzes
+
+@page "/quizzes/details/{QuizId:int}"
+
+@if (Quiz == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container justify-content-center">
+        <div class="card w-75">
+            <div class="card-body">
+                <div class="row">
+                    <img src="@this.Quiz.ImageUrl" />
+                    <h3>@this.Quiz.Name</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+   <a href="quizzes/game/@(this.QuizId)" class="btn btn-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Play</a>
+}
+
+
+@code {
+    [Parameter]
+    public int QuizId { get; set; }
+
+    public QuizDetailsResponse Quiz { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Quiz = await this.HttpClient.GetJsonAsync<QuizDetailsResponse>($"quizzes/{QuizId}");
+    }
+}

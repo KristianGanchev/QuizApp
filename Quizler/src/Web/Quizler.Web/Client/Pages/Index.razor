@@ -8,6 +8,7 @@
 }
 else
 {
+    <a href="/modal-test"> dfsdfsdfdsfsd </a>
     foreach (var category in this.categories)
     {
         <div class="container justify-content-center">
@@ -16,12 +17,14 @@ else
             <div class="row">
                 @foreach (var quiz in category.Quizzes)
                 {
+                <a href="quizzes/details/@(quiz.Id)">
                     <div class="card m-3" style="width: 12rem;">
                         <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
                         </div>
                     </div>
+                </a>
                 }
             </div>
         </div>

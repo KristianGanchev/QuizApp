@@ -10,8 +10,8 @@ using Quizler.Data;
 namespace Quizler.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200403131105_AddInitialModels")]
-    partial class AddInitialModels
+    [Migration("20200423132632_AddQuizReferenseToResultTable")]
+    partial class AddQuizReferenseToResultTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -424,6 +424,9 @@ namespace Quizler.Data.Migrations
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(450)");
 
@@ -431,39 +434,11 @@ namespace Quizler.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
+                    b.HasIndex("QuizId");
+
                     b.HasIndex("StudentId");
 
                     b.ToTable("Results");
-                });
-
-            modelBuilder.Entity("Quizler.Data.Models.Setting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -550,6 +525,12 @@ namespace Quizler.Data.Migrations
 
             modelBuilder.Entity("Quizler.Data.Models.Result", b =>
                 {
+                    b.HasOne("Quizler.Data.Models.Quiz", "Quiz")
+                        .WithMany("Results")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Quizler.Data.Models.ApplicationUser", "Student")
                         .WithMany("Results")
                         .HasForeignKey("StudentId");

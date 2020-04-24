@@ -34,7 +34,7 @@
         public ActionResult<IEnumerable<QuestionResponse>> GetAll(int quizId)
         {
 
-            var questions = this.questionsServices.GetAll<QuestionResponse>(quizId).ToList();
+            var questions = this.questionsServices.GetAll<QuestionResponse>(quizId).ToArray();
 
             foreach (var question in questions)
             {
@@ -43,7 +43,7 @@
                 question.Answers = ansewers;
             }
 
-            return questions.ToArray();
+            return questions;
         }
     }
 }
