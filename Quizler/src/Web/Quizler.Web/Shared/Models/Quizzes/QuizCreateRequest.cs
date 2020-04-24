@@ -1,5 +1,6 @@
 ﻿namespace Quizler.Web.Shared.Models.Quizzes
 {
+    using Microsoft.AspNetCore.Http;
     using System.ComponentModel.DataAnnotations;
 
     public class QuizCreateRequest
@@ -11,6 +12,8 @@
 
         [Required]
         public int CategorieId { get; set; }
+
+        public string ImageUrl { get; set; }
 
         public string User { get; set; }
     }

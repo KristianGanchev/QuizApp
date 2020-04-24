@@ -2,6 +2,9 @@
 
 @using Quizler.Web.Shared.Models.Categories
 @using Quizler.Web.Shared.Models.Quizzes
+@using System.IO;
+
+@inject Blazor.FileReader.IFileReaderService fileReaderService
 
 @if (categories == null)
 {
@@ -24,7 +27,20 @@ else
                     {
                     <option value="@categorie.Id">@categorie.Name</option>
                     }
+                /**/
+                /**/
+                /**/
             </InputSelectNumber>
+        </div>
+        <div class="form-group mx-auto w-45">
+            <div class="d-flex justify-content-center">
+                <label asp-for="Picture" class="text-primary h5">Picture</label>
+            </div>
+            <input type="file"
+                   class="form-control text-primary text-center"
+                   id="picture"
+                   placeholder="Picture..."
+                  @ref="fileUpload" @onchange="UploadFile"/>
         </div>
         <button type="submit" class="btn btn-primary">Create quiz</button>
     </EditForm>
@@ -34,12 +50,23 @@ else
     private CategorieResponse[] categories;
     readonly QuizCreateRequest model = new QuizCreateRequest();
     QuizResponse response;
-
+    ElementReference fileUpload;
+    string imageData = string.Empty;
 
 
     protected override async Task OnInitializedAsync()
     {
         categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
+    }
+
+    async void UploadFile()
+    {
+        var files = await fileReaderService.CreateReference(fileUpload).EnumerateFilesAsync();
+
+        using (MemoryStream ms = await files.First().CreateMemoryStreamAsync())
+        {
+            model.ImageUrl = $"data:image/jpg;base64,{Convert.ToBase64String(ms.ToArray())}";
+        }
     }
 
     async Task Submit()

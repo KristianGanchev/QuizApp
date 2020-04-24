@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0-preview3.20168.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.3" />
@@ -13,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\Quizler.Data\Quizler.Data.csproj" />
+    <ProjectReference Include="..\..\..\Quizler.Services\Quizler.Services.csproj" />
     <ProjectReference Include="..\..\..\Services\Quizler.Services.Data\Quizler.Services.Data.csproj" />
     <ProjectReference Include="..\Client\Quizler.Web.Client.csproj" />
     <ProjectReference Include="..\Shared\Quizler.Web.Shared.csproj" />

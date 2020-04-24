@@ -2,7 +2,9 @@
 {
     using Quizler.Data.Common.Repositories;
     using Quizler.Data.Models;
+    using Quizler.Services.Mapping;
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class ResultService : IResultService
@@ -28,6 +30,13 @@
             await this.resultRepository.SaveChangesAsync();
 
             return result.Id;
+        }
+
+        public T GetByQuizId<T>(int quizId)
+        {
+            var result = this.resultRepository.All().Where(r => r.QuizId == quizId).To<T>().FirstOrDefault();
+
+            return result;
         }
     }
 }

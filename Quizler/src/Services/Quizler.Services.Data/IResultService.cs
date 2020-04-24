@@ -5,5 +5,7 @@
     public interface IResultService
     {
         Task<int> CreateAync(int points, int maxPoints, string studentId, int quizId);
+
+        T GetByQuizId<T>(int quizId);
     }
 }

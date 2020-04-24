@@ -17,9 +17,13 @@
             this.quizRepository = quizRepository;
         }
 
-        public async Task<int> CreateAsync(string name, int categoryId, ApplicationUser user)
+        public async Task<int> CreateAsync(string name, int categoryId, ApplicationUser user, string imageUrl)
         {
-            var imageUrl = "/images/default_quiz_image.png";
+
+            if (imageUrl == null)
+            {
+                imageUrl = "/images/default_quiz_image.png";
+            }
 
             var quiz = new Quiz
             {
@@ -53,7 +57,7 @@
 
         public IEnumerable<T> GetByCategory<T>(string categoryName)
         {
-            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.Category.Name == categoryName).Take(5);
+            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.Category.Name == categoryName).OrderByDescending(q => q.CreatedOn).Take(5);
 
             return query.To<T>().ToList();
         }

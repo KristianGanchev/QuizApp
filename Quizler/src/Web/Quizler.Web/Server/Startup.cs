@@ -20,6 +20,8 @@ namespace Quizler.Web.Server
     using Quizler.Web.Shared.Models.Common;
     using Quizler.Services.Mapping;
     using System.Reflection;
+    using CloudinaryDotNet;
+    using Quizler.Services;
 
     public class Startup
     {
@@ -44,6 +46,15 @@ namespace Quizler.Web.Server
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            Account account = new Account(
+                this.Configuration["Cloudinary:CloudName"],
+                this.Configuration["Cloudinary:ApiKey"],
+                this.Configuration["Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinary = new Cloudinary(account);
+
+            services.AddSingleton(cloudinary);
 
             services.AddAuthentication(options =>
             {
@@ -77,6 +88,7 @@ namespace Quizler.Web.Server
             services.AddTransient<IQuestionsServices, QuestionsServices>();
             services.AddTransient<IAnswersServices, AnswersServices>();
             services.AddTransient<IResultService, ResultService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

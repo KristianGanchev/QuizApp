@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Quizler.Web.Client.Services;
 using Blazored.LocalStorage;
 using Blazored.Modal;
+using Blazor.FileReader;
 
 namespace Quizler.Web.Client
 {
@@ -26,6 +27,7 @@ namespace Quizler.Web.Client
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAppState, AppState>();
+            builder.Services.AddFileReaderService(options => options.UseWasmSharedBuffer = true);
 
             await builder.Build().RunAsync();
         }

@@ -4,10 +4,10 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Quizler.Data.Models;
+    using Quizler.Services;
     using Quizler.Services.Data;
     using Quizler.Web.Shared.Models.Quizzes;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     [Authorize]
@@ -15,11 +15,13 @@
     {
         private readonly IQuizzesService quizzesService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICloudinaryService cloudinaryService;
 
-        public QuizzesController(IQuizzesService quizzesService, UserManager<ApplicationUser> userManager)
+        public QuizzesController(IQuizzesService quizzesService, UserManager<ApplicationUser> userManager, ICloudinaryService cloudinaryService)
         {
             this.quizzesService = quizzesService;
             this.userManager = userManager;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [HttpPost("[action]")]
@@ -31,10 +33,14 @@
             {
                 return BadRequest();
             }
+            
+            string imageUrl = await this.cloudinaryService.UploadPictureAsync(
+               model.ImageUrl,
+               model.Name);
 
-            var quizId = await this.quizzesService.CreateAsync(model.Name, model.CategorieId, user);
+            var quizId = await this.quizzesService.CreateAsync(model.Name, model.CategorieId, user, imageUrl);
 
-            return new QuizResponse { Id = quizId, Name = model.Name };
+           return new QuizResponse { Id = quizId, Name = model.Name };
         }
 
         [HttpGet("{id}")]

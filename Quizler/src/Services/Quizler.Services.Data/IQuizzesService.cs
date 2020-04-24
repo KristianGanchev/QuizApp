@@ -6,7 +6,7 @@
 
     public interface IQuizzesService
     {
-        Task<int> CreateAsync(string name, int categoryId, ApplicationUser user);
+        Task<int> CreateAsync(string name, int categoryId, ApplicationUser user, string imageUrl);
 
         T GetById<T>(int id);
 
