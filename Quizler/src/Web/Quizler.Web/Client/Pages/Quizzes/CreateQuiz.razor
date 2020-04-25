@@ -12,47 +12,182 @@
 }
 else
 {
-    <EditForm Model="model" OnValidSubmit="Submit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group">
-            <label for="Name">Quiz name</label>
-            <InputText class="form-control" @bind-Value="model.Name" placeholder="Give your quiz a name" />
-        </div>
-        <div class="form-group">
-            <label for="Name">Select your category</label>
-            <InputSelectNumber @bind-Value="model.CategorieId" id="categoryName" class="form-control">
-                <option value="0" disabled>Select a category</option>
-                @foreach (var categorie in categories)
-                    {
-                    <option value="@categorie.Id">@categorie.Name</option>
-                    }
-                /**/
-                /**/
-                /**/
-            </InputSelectNumber>
-        </div>
-        <div class="form-group mx-auto w-45">
-            <div class="d-flex justify-content-center">
-                <label asp-for="Picture" class="text-primary h5">Picture</label>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <EditForm Model="model" OnValidSubmit="Submit">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="form-group">
+                                <label for="Name">Quiz name</label>
+                                <InputText class="form-control" @bind-Value="model.Name" placeholder="Give your quiz a name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Name">Select your category</label>
+                                <InputSelectNumber @bind-Value="model.CategorieId" id="categoryName" class="form-control">
+                                    <option value="0" disabled>Select a category</option>
+                                    @foreach (var categorie in categories)
+                                        {
+                                        <option value="@categorie.Id">@categorie.Name</option>
+                                        }
+                                    /**/
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group mx-auto w-45">
+                                <div class="d-flex justify-content-center">
+                                    <label asp-for="Picture" class="text-primary h5">Picture</label>
+                                </div>
+                                <input type="file"
+                                       class="form-control text-primary text-center"
+                                       id="picture"
+                                       placeholder="Picture..."
+                                       @ref="fileUpload" @onchange="UploadFile" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create quiz</button>
+                        </EditForm>
+                    </div>
+                </div>
             </div>
-            <input type="file"
-                   class="form-control text-primary text-center"
-                   id="picture"
-                   placeholder="Picture..."
-                  @ref="fileUpload" @onchange="UploadFile"/>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p>Create question</p>
+                        <EditForm Model="CurrentQuestion" OnValidSubmit="Submit">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <InputText class="form-control" @bind-Value="CurrentQuestion.Text" placeholder="Write yor question here" />
+                                    </div>
+                                    <div class="col-md-4 ml-auto">
+                                        <InputNumber @bind-Value="@CurrentQuestion.Points" class="form-control" placeholder="Add poins" />
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <InputText @bind-Value="@CurrentQuestion.Answers[0].Text" class="form-control" placeholder="Answer option" />
+                                    </div>
+                                    <div class="col-md-2 ml-auto">
+                                        <div class="custom-control custom-checkbox">
+                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[0].IsCorrect" class="custom-control-input" id="customCheck1" />
+                                            <label class="custom-control-label" for="customCheck1"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <InputText @bind-Value="@CurrentQuestion.Answers[1].Text" class="form-control" placeholder="Answer option" />
+                                    </div>
+                                    <div class="col-md-2 ml-auto">
+                                        <div class="custom-control custom-checkbox">
+                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[1].IsCorrect" class="custom-control-input" id="customCheck2" />
+                                            <label class="custom-control-label" for="customCheck2"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <InputText @bind-Value="@CurrentQuestion.Answers[2].Text" class="form-control" placeholder="Answer option" />
+                                    </div>
+                                    <div class="col-md-2 ml-auto">
+                                        <div class="custom-control custom-checkbox">
+                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[2].IsCorrect" class="custom-control-input" id="customCheck3" />
+                                            <label class="custom-control-label" for="customCheck3"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <InputText @bind-Value="@CurrentQuestion.Answers[3].Text" class="form-control" placeholder="Answer option" />
+                                    </div>
+                                    <div class="col-md-2 ml-auto">
+                                        <div class="custom-control custom-checkbox">
+                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[3].IsCorrect" class="custom-control-input" id="customCheck4" />
+                                            <label class="custom-control-label" for="customCheck4"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                            <button type="button" class="btn btn-success" @onclick="CreateQuestion">Create</button>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Create quiz</button>
-    </EditForm>
+    </div>
+    @foreach (var question in this.Questions)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><strong>@question.Text</strong></h5>
+                <hr />
+                <div class="container">
+                    <div class="row">
+                        @foreach (var answer in question.Answers)
+                        {
+                            <h4>@answer.Text</h4>
+                        }
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger" @onclick="(() => RemoveQuestion(question)) ">Remove</button>
+            </div>
+        </div>
+        <br />
+    }
+</div>
 }
 
 @code {
     private CategorieResponse[] categories;
     readonly QuizCreateRequest model = new QuizCreateRequest();
     QuizResponse response;
+    Quizler.Web.Shared.Models.Questions.QuestionResponse questionResponse;
+    Quizler.Web.Shared.Models.Answers.AnswerResponse answerResponse;
     ElementReference fileUpload;
     string imageData = string.Empty;
 
+    public List<Quizler.Web.Shared.Models.Questions.QuestionRequest> Questions = new List<Web.Shared.Models.Questions.QuestionRequest>();
+
+    public Quizler.Web.Shared.Models.Questions.QuestionRequest CurrentQuestion = new Web.Shared.Models.Questions.QuestionRequest
+    {
+        Answers = new List<Quizler.Web.Shared.Models.Answers.AnswerRequest>()
+        {
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest()
+        }
+    };
+
+    protected void CreateQuestion()
+    {
+        this.Questions.Add(CurrentQuestion);
+        this.CurrentQuestion = new Web.Shared.Models.Questions.QuestionRequest
+        {
+            Answers = new List<Quizler.Web.Shared.Models.Answers.AnswerRequest>()
+        {
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
+            new Quizler.Web.Shared.Models.Answers.AnswerRequest()
+        }
+        };
+    }
+    protected void RemoveQuestion(Quizler.Web.Shared.Models.Questions.QuestionRequest question)
+    {
+        this.Questions.Remove(question);
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,9 +210,36 @@ else
 
         this.response = await this.HttpClient.PostJsonAsync<QuizResponse>("quizzes/create", model);
 
-        if (response != null)
+
+        if (response == null)
         {
-            this.Navigation.NavigateTo($"quizzes/edit/{this.response.Id}/{this.response.Name}");
+            this.Navigation.NavigateTo("error");
         }
+
+        foreach (var question in this.Questions)
+        {
+            question.QuizId = response.Id;
+            questionResponse = await this.HttpClient.PostJsonAsync<Quizler.Web.Shared.Models.Questions.QuestionResponse>("questions/create", question);
+
+            if (questionResponse == null)
+            {
+                this.Navigation.NavigateTo("error");
+            }
+
+            foreach (var answer in question.Answers)
+            {
+                answer.QuestionId = questionResponse.Id;
+                answerResponse = await this.HttpClient.PostJsonAsync<Quizler.Web.Shared.Models.Answers.AnswerResponse>("answers/create", answer);
+            }
+
+            if (answerResponse == null)
+            {
+                this.Navigation.NavigateTo("error");
+            }
+
+        }
+
+        this.Navigation.NavigateTo($"quizzes/my-quizzes");
+
     }
 }
