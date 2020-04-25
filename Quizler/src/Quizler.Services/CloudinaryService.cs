@@ -15,7 +15,7 @@
             this.cloudinaryUtility = cloudinaryUtility;
         }
 
-        public async Task<string> UploadPictureAsync(string pictureFile, string fileName)
+        public string UploadPictureAsync(string pictureFile, string fileName)
         {
             //byte[] destinationData;
 

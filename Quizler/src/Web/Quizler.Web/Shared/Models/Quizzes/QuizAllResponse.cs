@@ -4,7 +4,7 @@
     using Quizler.Data.Models;
     using Quizler.Services.Mapping;
 
-    public class QuizIndexResponse : IMapFrom<Quiz>, IHaveCustomMappings
+    public class QuizAllResponse : IMapFrom<Quiz>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -18,7 +18,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Quiz, QuizIndexResponse>()
+            configuration.CreateMap<Quiz, QuizAllResponse>()
                  .ForMember(q => q.Questions, options =>
                  {
                      options.MapFrom(q => q.Questions.Count);

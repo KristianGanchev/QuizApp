@@ -61,5 +61,12 @@
 
             return query.To<T>().ToList();
         }
+
+        public IEnumerable<T> GetAllByUser<T>(string userId)
+        {
+            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.CreatorId == userId).OrderByDescending(q => q.CreatedOn);
+
+            return query.To<T>().ToList();
+        }
     }
 }

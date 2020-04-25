@@ -1,0 +1,31 @@
+﻿@using Quizler.Web.Shared.Models.Quizzes
+
+@page "/quizzes/my-quizzes"
+
+@foreach (var quiz in this.Quizzes)
+{
+    <div class="container justify-content-center">
+        <div class="card w-75">
+            <div class="card-body">
+                <div class="row">
+                    <img src="@quiz.ImageUrl" style="width: 12rem;">
+                    <h3>@quiz.Name</h3>
+                    <a class="btn btn-primary" href="#" role="button">Link</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code
+{
+    List<QuizAllResponse> Quizzes = new List<QuizAllResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var username = await this.storage.GetItemAsync<string>("userName");
+
+        this.Quizzes = await this.HttpClient.GetJsonAsync<List<QuizAllResponse>>($"quizzes/myquizzes/{username}");
+    }
+}

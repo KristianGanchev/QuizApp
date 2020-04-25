@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Web.Client", "Web\Q
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Web.Shared", "Web\Quizler.Web\Shared\Quizler.Web.Shared.csproj", "{FA6F215F-511E-4D92-BB43-EFD7EA5C8A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizler.Services", "Quizler.Services\Quizler.Services.csproj", "{6A6F8FEE-6E8D-42DA-8F73-35B676918F3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizler.Services", "Quizler.Services\Quizler.Services.csproj", "{6A6F8FEE-6E8D-42DA-8F73-35B676918F3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

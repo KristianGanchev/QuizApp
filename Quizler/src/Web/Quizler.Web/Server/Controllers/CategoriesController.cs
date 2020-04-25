@@ -36,7 +36,7 @@
 
             foreach (var category in categories)
             {
-                var quizzes = this.quizzesService.GetByCategory<QuizIndexResponse>(category.Name);
+                var quizzes = this.quizzesService.GetByCategory<QuizAllResponse>(category.Name);
 
                 category.Quizzes = quizzes;
             }

@@ -7,6 +7,7 @@
     using Quizler.Services;
     using Quizler.Services.Data;
     using Quizler.Web.Shared.Models.Quizzes;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -33,19 +34,24 @@
             {
                 return BadRequest();
             }
-            
-            string imageUrl = await this.cloudinaryService.UploadPictureAsync(
+
+            string imageUrl = null;
+
+            if (model.ImageUrl != null)
+            {
+               imageUrl = this.cloudinaryService.UploadPictureAsync(
                model.ImageUrl,
                model.Name);
+            }
 
             var quizId = await this.quizzesService.CreateAsync(model.Name, model.CategorieId, user, imageUrl);
 
-           return new QuizResponse { Id = quizId, Name = model.Name };
+            return new QuizResponse { Id = quizId, Name = model.Name };
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public  ActionResult<QuizEditResponse> GetById(int id)
+        public ActionResult<QuizEditResponse> GetById(int id)
         {
             var quiz = this.quizzesService.GetById<QuizEditResponse>(id);
 
@@ -59,6 +65,17 @@
             var quiz = this.quizzesService.GetById<QuizPlayResponse>(id);
 
             return quiz;
+        }
+
+        [HttpGet("[action]/{userEmail}")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<QuizAllResponse>> MyQuizzes(string userEmail)
+        {
+            var user = this.userManager.Users.SingleOrDefault(u => u.Email == userEmail);
+
+            var myQuizzes = this.quizzesService.GetAllByUser<QuizAllResponse>(user.Id);
+
+            return myQuizzes.ToList();
         }
     }
 }

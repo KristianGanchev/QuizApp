@@ -10,7 +10,7 @@
     {
         public string Name { get; set; }
 
-        public IEnumerable<QuizIndexResponse> Quizzes { get; set; }
+        public IEnumerable<QuizAllResponse> Quizzes { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
