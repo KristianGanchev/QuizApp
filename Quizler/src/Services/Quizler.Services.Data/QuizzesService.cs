@@ -36,12 +36,30 @@
             await this.quizRepository.AddAsync(quiz);
             await this.quizRepository.SaveChangesAsync();
 
-          //  user.Quizzes.Add(quiz);
+            //  user.Quizzes.Add(quiz);
 
             return quiz.Id;
         }
 
-        public T GetById<T>(int id) 
+        public async Task<int> UpdateAsync(string name, int categoryId, string imageUrl, int id)
+        {
+            var quiz = await this.quizRepository.GetByIdWithDeletedAsync(id);
+
+            quiz.Name = name;
+            quiz.CategoryId = categoryId;
+
+            if (imageUrl != null)
+            {
+                quiz.ImageUrl = imageUrl;
+            }
+
+            this.quizRepository.Update(quiz);
+            await this.quizRepository.SaveChangesAsync();
+
+            return quiz.Id;
+        }
+
+        public T GetById<T>(int id)
         {
             var quiz = this.quizRepository.All().Where(q => q.Id == id).To<T>().FirstOrDefault();
 
@@ -64,7 +82,7 @@
 
         public IEnumerable<T> GetAllByUser<T>(string userId)
         {
-            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.CreatorId == userId).OrderByDescending(q => q.CreatedOn);
+            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.CreatorId == userId).OrderByDescending(q => q.CreatedOn.Day).ThenByDescending(q => q.ModifiedOn);
 
             return query.To<T>().ToList();
         }

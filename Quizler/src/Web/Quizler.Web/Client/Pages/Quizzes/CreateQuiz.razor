@@ -1,54 +1,21 @@
 ﻿@page "/quizzes/create"
 
-@using Quizler.Web.Shared.Models.Categories
 @using Quizler.Web.Shared.Models.Quizzes
-@using System.IO;
+@using Quizler.Web.Shared.Models.Questions
+@using Quizler.Web.Shared.Models.Answers
+@using Quizler.Web.Client.Pages.Questions
 
-@inject Blazor.FileReader.IFileReaderService fileReaderService
-
-@if (categories == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
 <div class="card">
     <div class="card-body">
         <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <EditForm Model="model" OnValidSubmit="Submit">
+                        <EditForm Model="Quiz" OnValidSubmit="Submit">
                             <DataAnnotationsValidator />
                             <ValidationSummary />
-                            <div class="form-group">
-                                <label for="Name">Quiz name</label>
-                                <InputText class="form-control" @bind-Value="model.Name" placeholder="Give your quiz a name" />
-                            </div>
-                            <div class="form-group">
-                                <label for="Name">Select your category</label>
-                                <InputSelectNumber @bind-Value="model.CategorieId" id="categoryName" class="form-control">
-                                    <option value="0" disabled>Select a category</option>
-                                    @foreach (var categorie in categories)
-                                        {
-                                        <option value="@categorie.Id">@categorie.Name</option>
-                                        }
-                                    /**/
-                                    /**/
-                                    /**/
-                                </InputSelectNumber>
-                            </div>
-                            <div class="form-group mx-auto w-45">
-                                <div class="d-flex justify-content-center">
-                                    <label asp-for="Picture" class="text-primary h5">Picture</label>
-                                </div>
-                                <input type="file"
-                                       class="form-control text-primary text-center"
-                                       id="picture"
-                                       placeholder="Picture..."
-                                       @ref="fileUpload" @onchange="UploadFile" />
-                            </div>
-                            <button type="submit" class="btn btn-primary">Create quiz</button>
+                            <QuizInput Quiz="Quiz" />
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Create your quiz</button>
                         </EditForm>
                     </div>
                 </div>
@@ -57,76 +24,18 @@ else
                 <div class="card">
                     <div class="card-body">
                         <p>Create question</p>
-                        <EditForm Model="CurrentQuestion" OnValidSubmit="Submit">
-                            <DataAnnotationsValidator />
+                        <EditForm Model="CurrentQuestion" OnValidSubmit="CreateQuestion">
+                            <DataAnnotationsValidator  />
                             <ValidationSummary />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <InputText class="form-control" @bind-Value="CurrentQuestion.Text" placeholder="Write yor question here" />
-                                    </div>
-                                    <div class="col-md-4 ml-auto">
-                                        <InputNumber @bind-Value="@CurrentQuestion.Points" class="form-control" placeholder="Add poins" />
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <InputText @bind-Value="@CurrentQuestion.Answers[0].Text" class="form-control" placeholder="Answer option" />
-                                    </div>
-                                    <div class="col-md-2 ml-auto">
-                                        <div class="custom-control custom-checkbox">
-                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[0].IsCorrect" class="custom-control-input" id="customCheck1" />
-                                            <label class="custom-control-label" for="customCheck1"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <InputText @bind-Value="@CurrentQuestion.Answers[1].Text" class="form-control" placeholder="Answer option" />
-                                    </div>
-                                    <div class="col-md-2 ml-auto">
-                                        <div class="custom-control custom-checkbox">
-                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[1].IsCorrect" class="custom-control-input" id="customCheck2" />
-                                            <label class="custom-control-label" for="customCheck2"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <InputText @bind-Value="@CurrentQuestion.Answers[2].Text" class="form-control" placeholder="Answer option" />
-                                    </div>
-                                    <div class="col-md-2 ml-auto">
-                                        <div class="custom-control custom-checkbox">
-                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[2].IsCorrect" class="custom-control-input" id="customCheck3" />
-                                            <label class="custom-control-label" for="customCheck3"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <InputText @bind-Value="@CurrentQuestion.Answers[3].Text" class="form-control" placeholder="Answer option" />
-                                    </div>
-                                    <div class="col-md-2 ml-auto">
-                                        <div class="custom-control custom-checkbox">
-                                            <InputCheckbox @bind-Value="@CurrentQuestion.Answers[3].IsCorrect" class="custom-control-input" id="customCheck4" />
-                                            <label class="custom-control-label" for="customCheck4"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                            </div>
-                            <button type="button" class="btn btn-success" @onclick="CreateQuestion">Create</button>
+                            <QuestionInput Question="CurrentQuestion" />
+                            <button type="submit" class="btn btn-success">Create</button>
                         </EditForm>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @foreach (var question in this.Questions)
+    @foreach (var question in this.Quiz.Questions)
     {
         <div class="card">
             <div class="card-body">
@@ -146,100 +55,92 @@ else
         <br />
     }
 </div>
-}
 
 @code {
-    private CategorieResponse[] categories;
-    readonly QuizCreateRequest model = new QuizCreateRequest();
-    QuizResponse response;
-    Quizler.Web.Shared.Models.Questions.QuestionResponse questionResponse;
-    Quizler.Web.Shared.Models.Answers.AnswerResponse answerResponse;
-    ElementReference fileUpload;
-    string imageData = string.Empty;
+    readonly QuizCreateRequest Quiz = new QuizCreateRequest();
+    QuizResponse quizResponse;
+    QuestionResponse questionResponse;
+    AnswerResponse answerResponse;
 
-    public List<Quizler.Web.Shared.Models.Questions.QuestionRequest> Questions = new List<Web.Shared.Models.Questions.QuestionRequest>();
 
-    public Quizler.Web.Shared.Models.Questions.QuestionRequest CurrentQuestion = new Web.Shared.Models.Questions.QuestionRequest
+    //public List<QuestionRequest> Questions = new List<QuestionRequest>();
+
+    public QuestionCreateRequest CurrentQuestion = new QuestionCreateRequest
     {
-        Answers = new List<Quizler.Web.Shared.Models.Answers.AnswerRequest>()
-        {
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest()
+        Answers = new List<AnswerCreateRequest>()
+{
+            new AnswerCreateRequest(),
+            new AnswerCreateRequest(),
+            new AnswerCreateRequest(),
+            new AnswerCreateRequest()
         }
     };
 
+    protected override void OnInitialized()
+    {
+        this.Quiz.Questions = new List<QuestionCreateRequest>();
+    }
+
     protected void CreateQuestion()
     {
-        this.Questions.Add(CurrentQuestion);
-        this.CurrentQuestion = new Web.Shared.Models.Questions.QuestionRequest
+        this.Quiz.Questions.Add(CurrentQuestion);
+        this.CurrentQuestion = new QuestionCreateRequest
         {
-            Answers = new List<Quizler.Web.Shared.Models.Answers.AnswerRequest>()
-        {
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest(),
-            new Quizler.Web.Shared.Models.Answers.AnswerRequest()
+            Answers = new List<AnswerCreateRequest>()
+{
+            new AnswerCreateRequest(),
+            new AnswerCreateRequest(),
+            new AnswerCreateRequest(),
+            new AnswerCreateRequest()
         }
         };
     }
-    protected void RemoveQuestion(Quizler.Web.Shared.Models.Questions.QuestionRequest question)
+    protected void RemoveQuestion(QuestionCreateRequest question)
     {
-        this.Questions.Remove(question);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
-    }
-
-    async void UploadFile()
-    {
-        var files = await fileReaderService.CreateReference(fileUpload).EnumerateFilesAsync();
-
-        using (MemoryStream ms = await files.First().CreateMemoryStreamAsync())
-        {
-            model.ImageUrl = $"data:image/jpg;base64,{Convert.ToBase64String(ms.ToArray())}";
-        }
+        this.Quiz.Questions.Remove(question);
     }
 
     async Task Submit()
     {
-        model.User = await this.storage.GetItemAsync<string>("userName");
+        Quiz.User = await this.storage.GetItemAsync<string>("userName");
 
-        this.response = await this.HttpClient.PostJsonAsync<QuizResponse>("quizzes/create", model);
-
-
-        if (response == null)
+        if (this.Quiz.Questions.Count >=4)
         {
-            this.Navigation.NavigateTo("error");
-        }
+            this.quizResponse = await this.HttpClient.PostJsonAsync<QuizResponse>("quizzes/create", Quiz);
 
-        foreach (var question in this.Questions)
-        {
-            question.QuizId = response.Id;
-            questionResponse = await this.HttpClient.PostJsonAsync<Quizler.Web.Shared.Models.Questions.QuestionResponse>("questions/create", question);
 
-            if (questionResponse == null)
+            if (quizResponse == null)
             {
                 this.Navigation.NavigateTo("error");
             }
 
-            foreach (var answer in question.Answers)
+            foreach (var question in this.Quiz.Questions)
             {
-                answer.QuestionId = questionResponse.Id;
-                answerResponse = await this.HttpClient.PostJsonAsync<Quizler.Web.Shared.Models.Answers.AnswerResponse>("answers/create", answer);
+                question.QuizId = quizResponse.Id;
+                questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/create", question);
+
+                if (questionResponse == null)
+                {
+                    this.Navigation.NavigateTo("error");
+                }
+
+                foreach (var answer in question.Answers)
+                {
+                    answer.QuestionId = questionResponse.Id;
+                    answerResponse = await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", answer);
+                }
+
+                if (answerResponse == null)
+                {
+                    this.Navigation.NavigateTo("error");
+                }
+
             }
 
-            if (answerResponse == null)
-            {
-                this.Navigation.NavigateTo("error");
-            }
-
+            this.Navigation.NavigateTo($"quizzes/my-quizzes");
         }
 
-        this.Navigation.NavigateTo($"quizzes/my-quizzes");
+
 
     }
 }

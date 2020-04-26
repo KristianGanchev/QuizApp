@@ -44,5 +44,25 @@
 
             return query.To<T>().ToList();
         }
+
+        public async Task<int> UpdateAsync(string text, bool isCorrect, int id)
+        {
+            var answer = await this.answerRepository.GetByIdWithDeletedAsync(id);
+
+            answer.Text = text;
+            answer.IsCorrect = isCorrect;
+
+            this.answerRepository.Update(answer);
+            await this.answerRepository.SaveChangesAsync();
+
+            return answer.Id;
+        }
+
+        public T GetByQuestionId<T>(int quizId)
+        {
+            var answer = this.answerRepository.All().Where(a => a.QuestionId == quizId).To<T>().FirstOrDefault();
+
+            return answer;
+        }
     }
 }

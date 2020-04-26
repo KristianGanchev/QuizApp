@@ -25,7 +25,6 @@ namespace Quizler.Web.Client
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IApiService, ApiService>();
             builder.Services.AddScoped<IAppState, AppState>();
             builder.Services.AddFileReaderService(options => options.UseWasmSharedBuffer = true);
 

@@ -1,0 +1,63 @@
+﻿@using Quizler.Web.Shared.Models.Categories
+@using Quizler.Web.Shared.Models.Quizzes
+@using System.IO;
+
+@inject Blazor.FileReader.IFileReaderService fileReaderService
+
+@if (Categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="form-group">
+        <label for="Name">Quiz name</label>
+        <InputText class="form-control" @bind-Value="Quiz.Name" placeholder="Give your quiz a name" />
+    </div>
+    <div class="form-group">
+        <label for="Name">Select your category</label>
+        <InputSelectNumber @bind-Value="Quiz.CategorieId" id="categoryName" class="form-control">
+            <option value="0" disabled>Select a category</option>
+            @foreach (var categorie in Categories)
+                {
+                <option value="@categorie.Id">@categorie.Name</option>
+                }
+            /**/
+            /**/
+        </InputSelectNumber>
+    </div>
+    <div class="form-group mx-auto w-45">
+        <div class="d-flex justify-content-center">
+            <label asp-for="Picture" class="text-primary h5">Picture</label>
+        </div>
+        <input type="file"
+               class="form-control text-primary text-center"
+               id="picture"
+               placeholder="Picture..."
+               @ref="fileUpload" @onchange="UploadFile" />
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public QuizCreateRequest Quiz { get; set; }
+    private CategorieResponse[] Categories;
+    ElementReference fileUpload;
+    string imageData = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
+    }
+
+    async void UploadFile()
+    {
+        var files = await fileReaderService.CreateReference(fileUpload).EnumerateFilesAsync();
+
+        using (MemoryStream ms = await files.First().CreateMemoryStreamAsync())
+        {
+            Quiz.ImageUrl = $"data:image/jpg;base64,{Convert.ToBase64String(ms.ToArray())}";
+        }
+    }
+}

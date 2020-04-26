@@ -39,6 +39,26 @@
             return question.Id;
         }
 
+        public async Task<int> UpdateAsync(string text, int points, int id)
+        {
+            var question = await this.questionRepository.GetByIdWithDeletedAsync(id);
+
+            question.Text = text;
+            question.Points = points;
+
+            this.questionRepository.Update(question);
+            await this.questionRepository.SaveChangesAsync();
+
+            return question.Id;
+        }
+
+        public T GetByQuizId<T>(int quizId) 
+        {
+            var question = this.questionRepository.All().Where(q => q.QuizId == quizId).To<T>().FirstOrDefault();
+
+            return question;
+        }
+
         public IEnumerable<T> GetAll<T>(int quizId) 
         {
             IQueryable<Question> query = this.questionRepository.All().Where(q => q.QuizId == quizId).OrderBy(q => q.CreatedOn);

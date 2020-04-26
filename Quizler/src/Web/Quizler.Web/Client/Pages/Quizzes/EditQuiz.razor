@@ -1,140 +1,236 @@
 ﻿@using Quizler.Web.Shared.Models.Quizzes
+@using Quizler.Web.Shared.Models.Categories
 @using Quizler.Web.Client.Pages.Questions;
 @using Quizler.Web.Shared.Models.Questions
 @using Quizler.Web.Shared.Models.Answers
+@using System.IO;
 
-@inject IAppState State
+@inject Blazor.FileReader.IFileReaderService fileReaderService
 
-@page "/quizzes/edit/{QuizId:int}/{QuizName}"
+@page "/quizzes/edit/{QuizId:int}"
 
-@if (quiz == null)
+@if (Quiz == null || Categories == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="@this.quiz.ImageUrl" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Quiz name: <strong>@this.quiz.Name</strong></h5>
-                        <p class="card-text">Category: <strong>@quiz.Category</strong></p>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                    </div>
+<div class="container justify-content-center">
+    <div class="card w-75">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <img src="@Quiz.ImageUrl" style="width: 12rem;">
                 </div>
-
-                <br />
-                <EditForm Model="questionModel" OnValidSubmit="Submit">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <CreateQuestion QuestionModel="questionModel"/>
-                </EditForm>
-            </div>
-            <div class="vl"></div>
-            <div class="col">
-                @if (this.questions == null)
-                {
-                    <p>Create your first question</p>
-                }
-                else
-                {
-                    foreach (var question in questions)
-                    {
-                        <QuestionEdit Question="@question" />
-                    }
-                }
+                <div class="col">
+                    <EditForm Model="Quiz" OnValidSubmit="Update">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="form-group">
+                            <label for="Name">Quiz name</label>
+                            <InputText class="form-control" @bind-Value="Quiz.Name" placeholder="Give your quiz a name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Name">Select your category</label>
+                            <InputSelectNumber @bind-Value="Quiz.CategorieId" id="categoryName" class="form-control">
+                                @foreach (var categorie in Categories)
+                                    {
+                                    <option value="@categorie.Id">@categorie.Name</option>
+                                    }
+                                /**/
+                                /**/
+                                /**/
+                                /**/
+                                /**/
+                                /**/
+                            </InputSelectNumber>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @ref="fileUpload" @onchange="UploadFile">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Edit</button>
+                    </EditForm>
+                </div>
             </div>
         </div>
     </div>
+    <br />
+    <div class="d-flex justify-content-between">
+        <div>
+            @if (currentQuestoinPage > 0)
+            {
+                <button type="button" class="btn btn-info" @onclick="PreviousQuestion">Prefvious</button>
+            }
+        </div>
+        <h3><strong>Question @(currentQuestoinPage + 1) / @Quiz.Questions.Count</strong></h3>
+        <div>
+            @if (currentQuestoinPage < Quiz.Questions.Count - 1)
+            {
+                <button type="button" class="btn btn-info" @onclick="NextQuestion">Next</button>
+
+            }
+            </div>
+        </div>
+   <br />
+    <div class="card">
+        <div class="card-body">
+            <p>Create question</p>
+            <EditForm Model="CurrentQuestion" OnValidSubmit="UpdateQuestion">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <InputText class="form-control" @bind-Value="CurrentQuestion.Text" placeholder="Write yor question here" />
+                        </div>
+                        <div class="col-md-4 ml-auto">
+                            <InputNumber @bind-Value="@CurrentQuestion.Points" class="form-control" placeholder="Add poins" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@CurrentQuestion.Answers[0].Text" class="form-control" placeholder="Answer option" />
+                            <ValidationMessage For="@(() => CurrentQuestion.Answers[0].Text)" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@CurrentQuestion.Answers[0].IsCorrect" class="custom-control-input" id="customCheck1" />
+                                <label class="custom-control-label" for="customCheck1"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@CurrentQuestion.Answers[1].Text" class="form-control" placeholder="Answer option" />
+                            <ValidationMessage For="@(() => CurrentQuestion.Answers[1].Text)" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@CurrentQuestion.Answers[1].IsCorrect" class="custom-control-input" id="customCheck2" />
+                                <label class="custom-control-label" for="customCheck2"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@CurrentQuestion.Answers[2].Text" class="form-control" placeholder="Answer option" />
+                            <ValidationMessage For="@(() => CurrentQuestion.Answers[2].Text)" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@CurrentQuestion.Answers[2].IsCorrect" class="custom-control-input" id="customCheck3" />
+                                <label class="custom-control-label" for="customCheck3"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@CurrentQuestion.Answers[3].Text" class="form-control" placeholder="Answer option" />
+                            <ValidationMessage For="@(() => CurrentQuestion.Answers[3].Text)" />
+                        </div>
+                        <div class="col-md-2 ml-auto">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@CurrentQuestion.Answers[3].IsCorrect" class="custom-control-input" id="customCheck4" />
+                                <label class="custom-control-label" for="customCheck4"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <button type="submit" class="btn btn-success" @onclick="UpdateQuestion">Edit</button>
+            </EditForm>
+        </div>
+    </div>
+</div>
+    <br />
 }
 
 @code {
     [Parameter]
     public int QuizId { get; set; }
 
-    [Parameter]
-    public string QuizName { get; set; }
+    private QuizEditResponse Quiz = new QuizEditResponse();
+    private AnswerEditResponse Answer = new AnswerEditResponse();
 
-    private QuizEditResponse quiz = new QuizEditResponse();
+    private CategorieResponse[] Categories;
+    private QuizResponse quizResponse;
+    private QuestionResponse questionResponse;
+    private AnswerResponse answerResponse;
 
-    public QuestionResponse[] questions;
+    public QuestionEditResponse CurrentQuestion { get; set; }
 
-    readonly QuestionBindingModel questionModel = new QuestionBindingModel
+    private int currentQuestoinPage { get; set; }
+
+    ElementReference fileUpload;
+    string imageData = string.Empty;
+
+    async void UploadFile()
     {
-        FirstAnswer = new AnswerRequest(),
-        SecondAnswer = new AnswerRequest(),
-        ThirdAnswer = new AnswerRequest(),
-        FourthAnswer = new AnswerRequest(),
-    };
+        var files = await fileReaderService.CreateReference(fileUpload).EnumerateFilesAsync();
 
-    protected override async Task OnInitializedAsync()
-    {
-        quiz = await this.HttpClient.GetJsonAsync<QuizEditResponse>($"quizzes/{QuizId}");
-
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender)
+        using (MemoryStream ms = await files.First().CreateMemoryStreamAsync())
         {
-            questions = await this.HttpClient.GetJsonAsync<QuestionResponse[]>($"questions/getall/{QuizId}");
+            Quiz.ImageUrl = $"data:image/jpg;base64,{Convert.ToBase64String(ms.ToArray())}";
         }
     }
 
-
-    async Task Submit()
+    protected override async Task OnInitializedAsync()
     {
-        var questionRequest = new QuestionRequest
-        {
-            Text = questionModel.Text,
-            Points = questionModel.Points,
-            QuizId = this.QuizId,
-        };
+        Quiz = await this.HttpClient.GetJsonAsync<QuizEditResponse>($"quizzes/edit/{QuizId}");
+        Categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
+        Quiz.Questions = await this.HttpClient.GetJsonAsync<List<QuestionEditResponse>>($"questions/All/{Quiz.Id}");
 
+        currentQuestoinPage = 0;
 
-        var questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/create", questionRequest);
+        CurrentQuestion = Quiz.Questions[currentQuestoinPage];
+        CurrentQuestion.Answers = Quiz.Questions[currentQuestoinPage].Answers;
+        CurrentQuestion.Id = Quiz.Questions[currentQuestoinPage].Id;
 
-        var firstAnswers = new AnswerRequest
-        {
-            Text = questionModel.FirstAnswer.Text,
-            IsCorrect = questionModel.FirstAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", firstAnswers);
-
-        var secondAnswer = new AnswerRequest
-        {
-            Text = questionModel.SecondAnswer.Text,
-            IsCorrect = questionModel.SecondAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", secondAnswer);
-
-        var thirdAnswers = new AnswerRequest
-        {
-            Text = questionModel.ThirdAnswer.Text,
-            IsCorrect = questionModel.ThirdAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", thirdAnswers);
-
-        var fourthAnswers = new AnswerRequest
-        {
-            Text = questionModel.FourthAnswer.Text,
-            IsCorrect = questionModel.FourthAnswer.IsCorrect,
-            QuestionId = questionResponse.Id,
-        };
-
-        await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", fourthAnswers);
     }
 
-    private void OnLoadedData()
+    async Task Update()
     {
-        StateHasChanged();
+        Quiz.Id = QuizId;
+
+        quizResponse = await this.HttpClient.PostJsonAsync<QuizResponse>("quizzes/update", Quiz);
+
+        if (quizResponse == null)
+        {
+            this.Navigation.NavigateTo("error");
+        }
+
+        this.Navigation.NavigateTo($"quizzes/details/{QuizId}");
+    }
+
+    async Task UpdateQuestion()
+    {
+        questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/update", CurrentQuestion);
+
+        foreach (var answer in CurrentQuestion.Answers)
+        {
+            answerResponse = await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/update", answer);
+        }
+    }
+
+    void PreviousQuestion()
+    {
+        currentQuestoinPage--;
+        CurrentQuestion = Quiz.Questions[currentQuestoinPage];
+    }
+
+    void NextQuestion()
+    {
+        currentQuestoinPage++;
+        CurrentQuestion = Quiz.Questions[currentQuestoinPage];
     }
 }

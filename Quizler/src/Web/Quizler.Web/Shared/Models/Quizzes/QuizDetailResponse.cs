@@ -22,6 +22,10 @@
                 .ForMember(q => q.Category, options =>
                 {
                     options.MapFrom(q => q.Category.Name);
+                   
+                })
+                .ForMember(q => q.Questions, options => 
+                {
                     options.MapFrom(q => q.Questions.Count);
                 });
         }

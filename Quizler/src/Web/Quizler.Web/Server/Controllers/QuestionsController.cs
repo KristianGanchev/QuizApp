@@ -22,23 +22,51 @@
 
         [HttpPost("[action]")]
         [AllowAnonymous]
-        public async Task<ActionResult<QuestionResponse>> Create([FromBody] QuestionRequest model)
+        public async Task<ActionResult<QuestionResponse>> Create([FromBody] QuestionCreateRequest model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var questionId = await this.questionsServices.CreateAsync(model.Text, model.Points, model.QuizId);
+
+            return new QuestionResponse { Text = model.Text, Id = questionId };
+        }
+
+        [HttpGet("[action]/{id}")]
+        [AllowAnonymous]
+        public ActionResult<QuestionEditResponse> Edit(int id)
+        {
+            var quiz = this.questionsServices.GetByQuizId<QuestionEditResponse>(id);
+
+            return quiz;
+        }
+
+        [HttpPost("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<QuestionResponse>> Update([FromBody] QuestionEditResponse model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var questionId = await this.questionsServices.UpdateAsync(model.Text, model.Points, model.Id);
 
             return new QuestionResponse { Text = model.Text, Id = questionId };
         }
 
         [HttpGet("[action]/{quizId}")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<QuestionResponse>> GetAll(int quizId)
+        public ActionResult<IEnumerable<QuestionResponse>> All(int quizId)
         {
 
-            var questions = this.questionsServices.GetAll<QuestionResponse>(quizId).ToArray();
+            var questions = this.questionsServices.GetAll<QuestionResponse>(quizId).ToList();
 
             foreach (var question in questions)
             {
-                var ansewers = this.answersServices.GetAll<AnswerResponse>(question.Id).ToArray();
+                var ansewers = this.answersServices.GetAll<AnswerResponse>(question.Id).ToList();
 
                 question.Answers = ansewers;
             }

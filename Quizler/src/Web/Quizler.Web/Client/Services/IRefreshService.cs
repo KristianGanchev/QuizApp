@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Quizler.Web.Client.Services
 {
+
     public interface IRefreshService
     {
         event Action RefreshRequested;

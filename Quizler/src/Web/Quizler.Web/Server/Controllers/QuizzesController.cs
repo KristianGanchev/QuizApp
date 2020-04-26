@@ -26,6 +26,7 @@
         }
 
         [HttpPost("[action]")]
+        [AllowAnonymous]
         public async Task<ActionResult<QuizResponse>> Create([FromBody] QuizCreateRequest model)
         {
             var user = this.userManager.Users.SingleOrDefault(u => u.Email == model.User);
@@ -49,11 +50,38 @@
             return new QuizResponse { Id = quizId, Name = model.Name };
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("[action]/{id}")]
         [AllowAnonymous]
-        public ActionResult<QuizEditResponse> GetById(int id)
+        public ActionResult<QuizEditResponse> Edit(int id)
         {
             var quiz = this.quizzesService.GetById<QuizEditResponse>(id);
+
+            return quiz;
+        }
+
+        [HttpPost("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<QuizResponse>> Update([FromBody] QuizEditResponse model)
+        {
+            string imageUrl = null;
+
+            if (model.ImageUrl != null)
+            {
+                imageUrl = this.cloudinaryService.UploadPictureAsync(
+                model.ImageUrl,
+                model.Name);
+            }
+
+            var quizId = await this.quizzesService.UpdateAsync(model.Name, model.CategorieId, imageUrl, model.Id);
+
+            return new QuizResponse { Id = quizId, Name = model.Name};
+        }
+
+        [HttpGet("[action]/{id}")]
+        [AllowAnonymous]
+        public ActionResult<QuizDetailsResponse> Details(int id)
+        {
+            var quiz = this.quizzesService.GetById<QuizDetailsResponse>(id);
 
             return quiz;
         }

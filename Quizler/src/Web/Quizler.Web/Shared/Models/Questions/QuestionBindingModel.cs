@@ -17,16 +17,16 @@
         public int Points { get; set; }
 
         [Required]
-        public AnswerRequest FirstAnswer { get; set; }
+        public AnswerCreateRequest FirstAnswer { get; set; }
 
         [Required]
-        public AnswerRequest SecondAnswer { get; set; }
+        public AnswerCreateRequest SecondAnswer { get; set; }
 
         [Required]
-        public AnswerRequest ThirdAnswer { get; set; }
+        public AnswerCreateRequest ThirdAnswer { get; set; }
 
         [Required]
-        public AnswerRequest FourthAnswer { get; set; }
+        public AnswerCreateRequest FourthAnswer { get; set; }
 
         public int QuizId { get; set; }
     }

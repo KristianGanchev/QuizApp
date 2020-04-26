@@ -1,8 +1,10 @@
 ﻿namespace Quizler.Web.Shared.Models.Answers
 {
+    using Quizler.Data.Models;
+    using Quizler.Services.Mapping;
     using System.ComponentModel.DataAnnotations;
 
-    public class AnswerRequest 
+    public class AnswerCreateRequest : IMapFrom<Answer>
     {
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]

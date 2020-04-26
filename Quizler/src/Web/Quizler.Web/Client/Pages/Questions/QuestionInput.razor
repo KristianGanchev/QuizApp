@@ -1,0 +1,72 @@
+﻿@using Quizler.Web.Shared.Models.Questions
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <InputText class="form-control" @bind-Value="Question.Text" placeholder="Write yor question here" />
+            </div>
+            <div class="col-md-4 ml-auto">
+                <InputNumber @bind-Value="@Question.Points" class="form-control" placeholder="Add poins" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-9">
+                <InputText @bind-Value="@Question.Answers[0].Text" class="form-control" placeholder="Answer option" />
+                <ValidationMessage For="@(() => Question.Answers[0].Text)" />
+            </div>
+            <div class="col-md-2 ml-auto">
+                <div class="custom-control custom-checkbox">
+                    <InputCheckbox @bind-Value="@Question.Answers[0].IsCorrect" class="custom-control-input" id="customCheck1" />
+                    <label class="custom-control-label" for="customCheck1"></label>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-9">
+                <InputText @bind-Value="@Question.Answers[1].Text" class="form-control" placeholder="Answer option" />
+                <ValidationMessage For="@(() => Question.Answers[1].Text)" />
+            </div>
+            <div class="col-md-2 ml-auto">
+                <div class="custom-control custom-checkbox">
+                    <InputCheckbox @bind-Value="@Question.Answers[1].IsCorrect" class="custom-control-input" id="customCheck2" />
+                    <label class="custom-control-label" for="customCheck2"></label>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-9">
+                <InputText @bind-Value="@Question.Answers[2].Text" class="form-control" placeholder="Answer option" />
+                <ValidationMessage For="@(() => Question.Answers[2].Text)" />
+            </div>
+            <div class="col-md-2 ml-auto">
+                <div class="custom-control custom-checkbox">
+                    <InputCheckbox @bind-Value="@Question.Answers[2].IsCorrect" class="custom-control-input" id="customCheck3" />
+                    <label class="custom-control-label" for="customCheck3"></label>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-9">
+                <InputText @bind-Value="@Question.Answers[3].Text" class="form-control" placeholder="Answer option" />
+                <ValidationMessage For="@(() => Question.Answers[3].Text)" />
+            </div>
+            <div class="col-md-2 ml-auto">
+                <div class="custom-control custom-checkbox">
+                    <InputCheckbox @bind-Value="@Question.Answers[3].IsCorrect" class="custom-control-input" id="customCheck4" />
+                    <label class="custom-control-label" for="customCheck4"></label>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+
+
+@code
+{
+    [Parameter]
+    public QuestionCreateRequest Question { get; set; }
+}

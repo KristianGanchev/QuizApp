@@ -1,15 +1,15 @@
-﻿using Quizler.Web.Shared.Models.Categories;
-using Quizler.Web.Shared.Models.Quizzes;
-using System.Threading.Tasks;
+﻿//using Quizler.Web.Shared.Models.Categories;
+//using Quizler.Web.Shared.Models.Quizzes;
+//using System.Threading.Tasks;
 
-namespace Quizler.Web.Client.Services
-{
-    public interface IApiService
-    {
-        Task<CategorieResponse[]> GetCategoriesNames();
+//namespace Quizler.Web.Client.Services
+//{
+//    public interface IApiService
+//    {
+//        Task<CategorieResponse[]> GetCategoriesNames();
 
-        Task<QuizResponse> CreateQuiz(QuizCreateRequest request);
+//        Task<QuizResponse> CreateQuiz(QuizCreateRequest request);
 
-        Task<QuizEditResponse> GetQuizById(int id);
-    }
-}
+//        Task<QuizEditRequestcs> GetQuizById(int id);
+//    }
+//}

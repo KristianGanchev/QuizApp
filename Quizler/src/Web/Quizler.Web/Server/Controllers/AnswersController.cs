@@ -22,11 +22,26 @@ namespace Quizler.Web.Server.Controllers
 
         [HttpPost("[action]")]
         [AllowAnonymous]
-        public async Task<ActionResult<AnswerResponse>> Create([FromBody] AnswerRequest model)
+        public async Task<ActionResult<AnswerResponse>> Create([FromBody] AnswerCreateRequest model)
         {
             var asnwerId = await this.answersServices.CreateAync(model.Text, model.IsCorrect, model.QuestionId);
 
             return new AnswerResponse { Id = asnwerId, Text = model.Text };
+        }
+
+
+        [HttpPost("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<AnswerResponse>> Update([FromBody] AnswerEditResponse model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var questionId = await this.answersServices.UpdateAsync(model.Text, model.IsCorrect, model.Id);
+
+            return new AnswerResponse { Text = model.Text, Id = questionId };
         }
 
         [HttpGet("[action]/{questionId}")]
