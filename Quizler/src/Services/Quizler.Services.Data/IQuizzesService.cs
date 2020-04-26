@@ -17,5 +17,7 @@
         IEnumerable<T> GetByCategory<T>(string categoryName);
 
         Task<int> UpdateAsync(string name, int categoryId, string imageUrl, int id);
+
+        Task<int> DeleteAsync(int id);
     }
 }

@@ -10,10 +10,12 @@
     public class ResultService : IResultService
     {
         private readonly IDeletableEntityRepository<Result> resultRepository;
+        private readonly IDeletableEntityRepository<Quiz> quizRepository;
 
-        public ResultService(IDeletableEntityRepository<Result> resultRepository)
+        public ResultService(IDeletableEntityRepository<Result> resultRepository, IDeletableEntityRepository<Quiz> quizRepository)
         {
             this.resultRepository = resultRepository;
+            this.quizRepository = quizRepository;
         }
 
         public async Task<int> CreateAync(int points, int maxPoints, string studentId, int quizId)
@@ -28,6 +30,11 @@
 
             await this.resultRepository.AddAsync(result);
             await this.resultRepository.SaveChangesAsync();
+
+            var quiz = await this.quizRepository.GetByIdWithDeletedAsync(quizId);
+            quiz.Plays++;
+            this.quizRepository.Update(quiz);
+            await this.quizRepository.SaveChangesAsync();
 
             return result.Id;
         }

@@ -1,0 +1,61 @@
+﻿@using Quizler.Web.Shared.Models.Categories
+@using Quizler.Web.Shared.Models.Quizzes
+@using System.IO;
+
+@inject Blazor.FileReader.IFileReaderService fileReaderService
+
+@if (Categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="form-group">
+        <label for="Name">Quiz name</label>
+        <InputText class="form-control" @bind-Value="Quiz.Name" placeholder="Give your quiz a name" />
+    </div>
+    <div class="form-group">
+        <label for="Name">Select your category</label>
+        <InputSelectNumber @bind-Value="Quiz.CategorieId" id="categoryName" class="form-control">
+            @foreach (var categorie in Categories)
+                {
+                <option value="@categorie.Id">@categorie.Name</option>
+                }
+            /**/
+            /**/
+        </InputSelectNumber>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @ref="fileUpload" @onchange="UploadFile">
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public QuizEditResponse Quiz { get; set; }
+    private CategorieResponse[] Categories;
+    ElementReference fileUpload;
+    string imageData = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
+    }
+
+    async void UploadFile()
+    {
+        var files = await fileReaderService.CreateReference(fileUpload).EnumerateFilesAsync();
+
+        using (MemoryStream ms = await files.First().CreateMemoryStreamAsync())
+        {
+            Quiz.ImageUrl = $"data:image/jpg;base64,{Convert.ToBase64String(ms.ToArray())}";
+        }
+    }
+}

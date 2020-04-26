@@ -59,6 +59,7 @@
             return quiz;
         }
 
+
         [HttpPost("[action]")]
         [AllowAnonymous]
         public async Task<ActionResult<QuizResponse>> Update([FromBody] QuizEditResponse model)
@@ -75,6 +76,13 @@
             var quizId = await this.quizzesService.UpdateAsync(model.Name, model.CategorieId, imageUrl, model.Id);
 
             return new QuizResponse { Id = quizId, Name = model.Name};
+        }
+
+        [HttpDelete("[action]/{id}")]
+        [AllowAnonymous]
+        public async Task<int> Delete([FromRoute] int id)
+        {
+           return await this.quizzesService.DeleteAsync(id);
         }
 
         [HttpGet("[action]/{id}")]

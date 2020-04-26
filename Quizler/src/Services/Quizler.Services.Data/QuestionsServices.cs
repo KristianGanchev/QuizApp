@@ -11,12 +11,12 @@
     public class QuestionsServices : IQuestionsServices
     {
         private readonly IDeletableEntityRepository<Question> questionRepository;
-        private readonly IDeletableEntityRepository<Quiz> quizRepository;
+        private readonly IDeletableEntityRepository<Answer> answerRepository;
 
-        public QuestionsServices(IDeletableEntityRepository<Question> questionRepository, IDeletableEntityRepository<Quiz> quizRepository) 
+        public QuestionsServices(IDeletableEntityRepository<Question> questionRepository, IDeletableEntityRepository<Answer> answerRepository) 
         {
             this.questionRepository = questionRepository;
-            this.quizRepository = quizRepository;
+            this.answerRepository = answerRepository;
         }
 
         public async Task<int> CreateAsync(string name, int points, int quizId)
@@ -32,9 +32,6 @@
 
             await this.questionRepository.AddAsync(question);
             await this.questionRepository.SaveChangesAsync();
-
-            //var quiz = await this.quizRepository.GetByIdWithDeletedAsync(quizId);
-            //quiz.Questions.Add(question);
 
             return question.Id;
         }
@@ -52,11 +49,36 @@
             return question.Id;
         }
 
+        public async Task<int> DeleteAsync(int id)
+        {
+            var question = await this.questionRepository.GetByIdWithDeletedAsync(id);
+            var answers = this.answerRepository.All().Where(a => a.QuestionId == id);
+
+            foreach (var asnwer in answers)
+            {
+                this.answerRepository.Delete(asnwer);
+            }
+
+            this.questionRepository.Delete(question);
+
+            await this.answerRepository.SaveChangesAsync();
+            var result = await this.questionRepository.SaveChangesAsync();
+
+            return result;
+        }
+
         public T GetByQuizId<T>(int quizId) 
         {
             var question = this.questionRepository.All().Where(q => q.QuizId == quizId).To<T>().FirstOrDefault();
 
             return question;
+        }
+
+        public int GetId(string questionName, int quizId) 
+        {
+            var question = this.questionRepository.All().Where(q => q.Text == questionName && q.QuizId == quizId).FirstOrDefault();
+
+            return question.Id;
         }
 
         public IEnumerable<T> GetAll<T>(int quizId) 

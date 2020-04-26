@@ -14,7 +14,7 @@ else
     <div class="row">
 
 
-        <h1 class="text-center"><strong>Question: @(currentPage+1) / @(this.Questions.Length + 1) @this.CurrentQuestion.Text</strong></h1>
+        <h1 class="text-center"><strong>Question: @(currentPage+1) / @(this.Questions.Length) @this.CurrentQuestion.Text</strong></h1>
         <h1 class="text-center"><strong>Points: @Result.Points / @Result.MaxPoints</strong></h1>
 
     </div>
@@ -42,7 +42,7 @@ else
 
     public QuizPlayResponse Quiz { get; set; }
 
-    public int currentPage { get; set; }
+    int currentPage = 0;
 
     public QuestionPlayResponse[] Questions { get; set; }
     public QuestionPlayResponse CurrentQuestion { get; set; }
@@ -57,29 +57,20 @@ else
     {
         this.Quiz = await this.HttpClient.GetJsonAsync<QuizPlayResponse>($"quizzes/play/{this.QuizId}");
         this.Questions = this.Quiz.Questions.ToArray();
-        if (currentPage != this.Questions.Length)
-        {
-            CurrentQuestion = Questions[currentPage];
-        }
+
+        CurrentQuestion = Questions[currentPage];
 
         Username = await this.storage.GetItemAsync<string>("userName");
 
         Result.QuizId = this.QuizId;
         Result.User = Username;
         Result.MaxPoints = this.Quiz.Questions.Sum(q => q.Points);
-
-
-        currentPage = 0;
     }
 
 
 
     void SelectAnswer(AnswerResponse answer)
     {
-        if (currentPage == this.Questions.Length)
-        {
-            this.Navigation.NavigateTo($"/results/{this.QuizId}");
-        }
 
         if (answer.IsCorrect)
         {
@@ -93,7 +84,14 @@ else
 
         currentPage++;
 
-        Console.WriteLine(answer.Text);
-        Console.WriteLine(answer.IsCorrect);
+        if (currentPage == this.Questions.Length)
+        {
+            this.Navigation.NavigateTo($"/results/{this.QuizId}");
+        }
+
+        if (currentPage <= this.Questions.Length - 1)
+        {
+            CurrentQuestion = Questions[currentPage];
+        }
     }
 }

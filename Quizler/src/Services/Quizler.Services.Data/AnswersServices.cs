@@ -10,12 +10,10 @@
     public class AnswersServices : IAnswersServices
     {
         private readonly IDeletableEntityRepository<Answer> answerRepository;
-        private readonly IDeletableEntityRepository<Question> questionRepository;
 
-        public AnswersServices(IDeletableEntityRepository<Answer> answerRepository, IDeletableEntityRepository<Question> questionRepository)
+        public AnswersServices(IDeletableEntityRepository<Answer> answerRepository)
         {
             this.answerRepository = answerRepository;
-            this.questionRepository = questionRepository;
         }
 
      
@@ -31,9 +29,6 @@
 
             await this.answerRepository.AddAsync(answer);
             await this.answerRepository.SaveChangesAsync();
-
-            var question = await this.questionRepository.GetByIdWithDeletedAsync(questionId);
-          //  question.Answers.Add(answer);
 
             return answer.Id;
         }

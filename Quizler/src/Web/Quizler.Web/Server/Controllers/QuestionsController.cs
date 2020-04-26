@@ -57,6 +57,13 @@
             return new QuestionResponse { Text = model.Text, Id = questionId };
         }
 
+        [HttpDelete("[action]/{id}")]
+        [AllowAnonymous]
+        public async Task<int> Delete([FromRoute] int id)
+        {
+            return await this.questionsServices.DeleteAsync(id);
+        }
+
         [HttpGet("[action]/{quizId}")]
         [AllowAnonymous]
         public ActionResult<IEnumerable<QuestionResponse>> All(int quizId)
@@ -72,6 +79,15 @@
             }
 
             return questions;
+        }
+
+        [HttpGet()]
+        [AllowAnonymous]
+        public ActionResult<int> GetId([FromQuery] string questionName, int quizId)
+        {
+            var questionId = this.questionsServices.GetId(questionName, quizId);
+
+            return questionId;
         }
     }
 }
