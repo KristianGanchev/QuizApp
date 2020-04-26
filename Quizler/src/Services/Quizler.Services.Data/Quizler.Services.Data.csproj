@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Quizler.Data.Common\Quizler.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Quizler.Data.Models\Quizler.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\Quizler.Web\Shared\Quizler.Web.Shared.csproj" />
     <ProjectReference Include="..\Quizler.Services.Mapping\Quizler.Services.Mapping.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,43 @@
-﻿@page "/results/{QuizId:int}"
+﻿@page "/results/details/{QuizId:int}"
 
-<h3>QuizResult</h3>
+@using Quizler.Web.Shared.Models.Quizzes
+
+@if (Quiz == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@this.Quiz.Name</h5>
+        </div>
+        @foreach (var question in Quiz.Questions)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @question.Text
+                </div>
+                <div class="card-body">
+                    @foreach (var answer in question.Answers)
+                    {
+                        <p>@answer.Text</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
 
 @code {
     [Parameter]
     public int QuizId { get; set; }
+
+    public QuizPlayResponse Quiz { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Quiz = await this.HttpClient.GetJsonAsync<QuizPlayResponse>($"quizzes/play/{this.QuizId}");
+    }
 }

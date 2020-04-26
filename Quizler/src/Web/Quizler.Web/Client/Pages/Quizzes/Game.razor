@@ -65,12 +65,14 @@ else
         Result.QuizId = this.QuizId;
         Result.User = Username;
         Result.MaxPoints = this.Quiz.Questions.Sum(q => q.Points);
+        Result.MyAnswers = new List<AnswerResponse>();
     }
 
 
 
     void SelectAnswer(AnswerResponse answer)
     {
+        Result.MyAnswers.Add(answer);
 
         if (answer.IsCorrect)
         {
@@ -86,7 +88,7 @@ else
 
         if (currentPage == this.Questions.Length)
         {
-            this.Navigation.NavigateTo($"/results/{this.QuizId}");
+            this.Navigation.NavigateTo($"/results/details/{this.QuizId}");
         }
 
         if (currentPage <= this.Questions.Length - 1)

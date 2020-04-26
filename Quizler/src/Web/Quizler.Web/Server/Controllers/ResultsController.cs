@@ -32,7 +32,20 @@
 
             var maxPoints = quiz.Questions.Sum(q => q.Points);
 
-            var resultId = await this.resultService.CreateAync(resultRequest.Points, maxPoints, user.Id, resultRequest.QuizId);
+            var resultId = await this.resultService.CreateAync(resultRequest.Points, maxPoints, user.Id, resultRequest.QuizId, resultRequest.MyAnswers.ToList());
+
+            return new ResultResponse { Id = resultId };
+        }
+
+        [HttpGet("[action]/{resultId}")]
+        public async Task<ActionResult<ResultResponse>> Details([FromBody] ResultRequest resultRequest)
+        {
+            var user = this.userManager.Users.SingleOrDefault(u => u.Email == resultRequest.User);
+            var quiz = this.quizzesService.GetById<QuizPlayResponse>(resultRequest.QuizId);
+
+            var maxPoints = quiz.Questions.Sum(q => q.Points);
+
+            var resultId = await this.resultService.CreateAync(resultRequest.Points, maxPoints, user.Id, resultRequest.QuizId, resultRequest.MyAnswers.ToList());
 
             return new ResultResponse { Id = resultId };
         }

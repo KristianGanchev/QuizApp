@@ -35,6 +35,8 @@
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<AnswerResult> AnswersResults { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -81,6 +83,17 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            builder.Entity<AnswerResult>()
+                .HasKey(ar => new { ar.AnswerId, ar.ResultId });
+            builder.Entity<AnswerResult>()
+                .HasOne(ar => ar.Answer)
+                .WithMany(a => a.Results)
+                .HasForeignKey(ar => ar.AnswerId);
+            builder.Entity<AnswerResult>()
+                .HasOne(ar => ar.Result)
+                .WithMany(r => r.SelectedAnswers)
+                .HasForeignKey(ar => ar.ResultId);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

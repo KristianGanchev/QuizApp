@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quizler.Data;
 
 namespace Quizler.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200426170255_AddSelectedAnswersToResultTable")]
+    partial class AddSelectedAnswersToResultTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,6 +150,9 @@ namespace Quizler.Data.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ResultId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -157,22 +162,9 @@ namespace Quizler.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
-                });
-
-            modelBuilder.Entity("Quizler.Data.Models.AnswerResult", b =>
-                {
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnswerId", "ResultId");
-
                     b.HasIndex("ResultId");
 
-                    b.ToTable("AnswersResults");
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("Quizler.Data.Models.ApplicationRole", b =>
@@ -512,21 +504,10 @@ namespace Quizler.Data.Migrations
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Quizler.Data.Models.AnswerResult", b =>
-                {
-                    b.HasOne("Quizler.Data.Models.Answer", "Answer")
-                        .WithMany("Results")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Quizler.Data.Models.Result", "Result")
+                    b.HasOne("Quizler.Data.Models.Result", null)
                         .WithMany("SelectedAnswers")
-                        .HasForeignKey("ResultId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("ResultId");
                 });
 
             modelBuilder.Entity("Quizler.Data.Models.Question", b =>
