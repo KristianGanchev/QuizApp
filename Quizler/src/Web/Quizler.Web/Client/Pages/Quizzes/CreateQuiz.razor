@@ -58,12 +58,6 @@
 
 @code {
     readonly QuizCreateRequest Quiz = new QuizCreateRequest();
-    QuizResponse quizResponse;
-    QuestionResponse questionResponse;
-    AnswerResponse answerResponse;
-
-
-    //public List<QuestionRequest> Questions = new List<QuestionRequest>();
 
     public QuestionCreateRequest CurrentQuestion = new QuestionCreateRequest
     {
@@ -102,45 +96,6 @@
 
     async Task Submit()
     {
-        Quiz.User = await this.storage.GetItemAsync<string>("userName");
-
-        if (this.Quiz.Questions.Count >=4)
-        {
-            this.quizResponse = await this.HttpClient.PostJsonAsync<QuizResponse>("quizzes/create", Quiz);
-
-
-            if (quizResponse == null)
-            {
-                this.Navigation.NavigateTo("error");
-            }
-
-            foreach (var question in this.Quiz.Questions)
-            {
-                question.QuizId = quizResponse.Id;
-                questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/create", question);
-
-                if (questionResponse == null)
-                {
-                    this.Navigation.NavigateTo("error");
-                }
-
-                foreach (var answer in question.Answers)
-                {
-                    answer.QuestionId = questionResponse.Id;
-                    answerResponse = await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/create", answer);
-                }
-
-                if (answerResponse == null)
-                {
-                    this.Navigation.NavigateTo("error");
-                }
-
-            }
-
-            this.Navigation.NavigateTo($"quizzes/my-quizzes");
-        }
-
-
-
+        await this.QuizService.CreateAsync(this.Quiz);
     }
 }

@@ -30,6 +30,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.Quiz = await this.HttpClient.GetJsonAsync<QuizDetailsResponse>($"quizzes/details/{QuizId}");
+        this.Quiz = await this.QuizService.GetById<QuizDetailsResponse>(QuizId, "quizzes/details/");
     }
 }

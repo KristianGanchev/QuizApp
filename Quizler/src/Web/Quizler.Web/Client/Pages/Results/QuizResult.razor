@@ -2,6 +2,7 @@
 
 @using Quizler.Web.Shared.Models.Results
 @using Quizler.Web.Shared.Models.Questions
+@using Quizler.Web.Shared.Models.Answers
 
 @if (Result == null)
 {
@@ -52,7 +53,7 @@ else
 
     public List<QuestionsResultDetails> Questions { get; set; }
 
-    Quizler.Web.Shared.Models.Answers.AnswerResponse SelectedAnswer = new Web.Shared.Models.Answers.AnswerResponse();
+    AnswerResponse SelectedAnswer = new AnswerResponse();
 
     string style = String.Empty;
 
@@ -60,11 +61,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Result = await this.HttpClient.GetJsonAsync<ResultDetailsResponse>($"results/{ResultId}");
+        Result = await this.ResultsService.GetById<ResultDetailsResponse>(this.ResultId ,"results/");
         Questions = Result.Quiz.Questions;
-
-        Console.WriteLine(Result.SelectedAnswers.Count);
-        Console.WriteLine(Questions.Count);
 
         for (int question = 0; question < Questions.Count; question++)
         {

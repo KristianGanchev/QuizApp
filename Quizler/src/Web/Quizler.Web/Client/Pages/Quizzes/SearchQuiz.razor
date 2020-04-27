@@ -1,5 +1,7 @@
 ﻿@page "/quizzes/search/{SearchQuery}"
 
+@using Quizler.Web.Shared.Models.Quizzes
+
 @if (this.Quizzes == null)
 {
     <p><em>Loading...</em></p>
@@ -27,10 +29,10 @@ else
     [Parameter]
     public string SearchQuery { get; set; }
 
-    public List<Quizler.Web.Shared.Models.Quizzes.QuizAllResponse> Quizzes = new List<Web.Shared.Models.Quizzes.QuizAllResponse>();
+    public List<QuizAllResponse> Quizzes = new List<QuizAllResponse>();
 
     protected override async Task OnParametersSetAsync()
     {
-        this.Quizzes = await this.HttpClient.GetJsonAsync<List<Quizler.Web.Shared.Models.Quizzes.QuizAllResponse>>($"quizzes/search/{this.SearchQuery}");
+        this.Quizzes = await this.QuizService.Search<List<QuizAllResponse>>(this.SearchQuery);
     }
 }

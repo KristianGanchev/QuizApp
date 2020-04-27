@@ -8,8 +8,6 @@
 
         public int MaxPoints { get; set; }
 
-        public string User { get; set; }
-
         public int QuizId { get; set; }
 
         public ICollection<AnswerResponse> MyAnswers { get; set; }

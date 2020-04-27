@@ -70,7 +70,7 @@
 
         public IEnumerable<T> GetAll<T>()
         {
-            IQueryable<Quiz> query = this.quizRepository.All().OrderBy(q => q.CreatedOn);
+            IQueryable<Quiz> query = this.quizRepository.All().OrderByDescending(q => q.CreatedOn);
 
             return query.To<T>().ToList();
         }

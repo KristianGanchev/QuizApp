@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Quizler.Web.Client.Services
 {
-
-    public interface IRefreshService
+    public interface ICategoriesService
     {
-        event Action RefreshRequested;
-        void CallRequestRefresh();
+        Task<T> GetAll<T>(string route);
     }
 }

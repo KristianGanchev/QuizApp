@@ -29,7 +29,9 @@
         [AllowAnonymous]
         public async Task<ActionResult<QuizResponse>> Create([FromBody] QuizCreateRequest model)
         {
-            var user = this.userManager.Users.SingleOrDefault(u => u.Email == model.User);
+            var userName = this.User.Identity.Name;
+
+            var user = this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
 
             if (!this.ModelState.IsValid)
             {
@@ -103,11 +105,13 @@
             return quiz;
         }
 
-        [HttpGet("[action]/{userEmail}")]
+        [HttpGet("[action]")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<QuizAllResponse>> MyQuizzes(string userEmail)
+        public ActionResult<IEnumerable<QuizAllResponse>> MyQuizzes()
         {
-            var user = this.userManager.Users.SingleOrDefault(u => u.Email == userEmail);
+            var userName = this.User.Identity.Name;
+
+            var user = this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
 
             var myQuizzes = this.quizzesService.GetAllByUser<QuizAllResponse>(user.Id);
 

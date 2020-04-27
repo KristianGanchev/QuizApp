@@ -38,6 +38,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await this.HttpClient.GetJsonAsync<CategorieWithQuizzesResponse[]>("categories/getallwithquizzes");
+        categories = await this.CategorieService.GetAll<CategorieWithQuizzesResponse[]>("categories/getallwithquizzes");
     }
 }

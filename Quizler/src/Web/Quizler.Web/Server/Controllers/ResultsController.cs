@@ -27,7 +27,9 @@
         [HttpPost("[action]")]
         public async Task<ActionResult<ResultResponse>> Create([FromBody] ResultRequest resultRequest) 
         {
-            var user =  this.userManager.Users.SingleOrDefault(u => u.Email == resultRequest.User);
+            var userName = this.User.Identity.Name;
+            var user =  this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
+
             var quiz = this.quizzesService.GetById<QuizPlayResponse>(resultRequest.QuizId);
 
             var maxPoints = quiz.Questions.Sum(q => q.Points);

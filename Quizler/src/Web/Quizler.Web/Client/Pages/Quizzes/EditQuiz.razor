@@ -13,68 +13,78 @@
 }
 else
 {
-<div class="container justify-content-center">
-    <div class="card w-75">
-        <div class="card-body">
-            <div class="row">
-                <div class="col">
-                    <img src="@Quiz.ImageUrl" style="width: 12rem;">
+    <div class="container justify-content-center">
+        <div class="card w-75">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <img src="@Quiz.ImageUrl" style="width: 12rem;">
+                    </div>
+                    <div class="col">
+                        <EditForm Model="Quiz" OnValidSubmit="Update">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <QuizEditInput Quiz="Quiz" />
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <button type="submit" class="btn btn-warning">Edit</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger" @onclick="DeleteQuiz">Delete</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    </div>
                 </div>
-                <div class="col">
-                    <EditForm Model="Quiz" OnValidSubmit="Update">
+            </div>
+        </div>
+        <br />
+
+        @if (this.Quiz.Questions.Any())
+        {
+            <div class="d-flex justify-content-between">
+                <div>
+                    @if (currentQuestoinPage > 0)
+                    {
+                        <button type="button" class="btn btn-info" @onclick="PreviousQuestion">Prefvious</button>
+                    }
+                </div>
+                <h3><strong>Question @(currentQuestoinPage + 1) / @Quiz.Questions.Count</strong></h3>
+                <div>
+                    @if (currentQuestoinPage < Quiz.Questions.Count - 1)
+                    {
+                        <button type="button" class="btn btn-info" @onclick="NextQuestion">Next</button>
+
+                    }
+                </div>
+            </div>
+            <br />
+
+            <div class="card">
+                <div class="card-body">
+                    <p>Create question</p>
+                    <EditForm Model="CurrentQuestion" OnValidSubmit="UpdateQuestion">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
-                        <QuizEditInput Quiz="Quiz" />
+                        <QuestionEdit Question="CurrentQuestion" />
                         <div class="d-flex justify-content-between">
                             <div>
                                 <button type="submit" class="btn btn-warning">Edit</button>
                             </div>
                             <div>
-                                <button type="button" class="btn btn-danger" @onclick="DeleteQuiz">Delete</button>
+                                <button type="button" class="btn btn-danger" @onclick="DeleteQuestion">Delete</button>
                             </div>
                         </div>
                     </EditForm>
                 </div>
             </div>
-        </div>
-    </div>
-    <br />
-    <div class="d-flex justify-content-between">
-        <div>
-            @if (currentQuestoinPage > 0)
-            {
-                <button type="button" class="btn btn-info" @onclick="PreviousQuestion">Prefvious</button>
-            }
-        </div>
-        <h3><strong>Question @(currentQuestoinPage + 1) / @Quiz.Questions.Count</strong></h3>
-        <div>
-            @if (currentQuestoinPage < Quiz.Questions.Count - 1)
-            {
-                <button type="button" class="btn btn-info" @onclick="NextQuestion">Next</button>
+        }
+        else
+        {
+            <h3>No question for this quiz</h3>
+        }
 
-            }
-            </div>
-        </div>
-   <br />
-    <div class="card">
-        <div class="card-body">
-            <p>Create question</p>
-            <EditForm Model="CurrentQuestion" OnValidSubmit="UpdateQuestion">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <QuestionEdit Question="CurrentQuestion"/>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <button type="submit" class="btn btn-warning">Edit</button>
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-danger" @onclick="DeleteQuestion">Delete</button>
-                    </div>
-                </div>
-            </EditForm>
-        </div>
     </div>
-</div>
     <br />
 }
 
@@ -86,9 +96,6 @@ else
     private AnswerEditResponse Answer = new AnswerEditResponse();
 
     private CategorieResponse[] Categories;
-    private QuizResponse quizResponse;
-    private QuestionResponse questionResponse;
-    private AnswerResponse answerResponse;
 
     public QuestionEditResponse CurrentQuestion { get; set; }
 
@@ -96,9 +103,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Quiz = await this.HttpClient.GetJsonAsync<QuizEditResponse>($"quizzes/edit/{QuizId}");
-        Categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
-        Quiz.Questions = await this.HttpClient.GetJsonAsync<List<QuestionEditResponse>>($"questions/All/{Quiz.Id}");
+        Quiz = await this.QuizService.GetById<QuizEditResponse>(this.QuizId, "quizzes/edit/");
+        Categories = await this.CategorieService.GetAll<CategorieResponse[]>("categories/getall");
+        Quiz.Questions = await this.QuestionService.GetAllByQuizId<List<QuestionEditResponse>>(this.QuizId);
 
         currentQuestoinPage = 0;
 
@@ -110,41 +117,36 @@ else
 
     async Task Update()
     {
-        Quiz.Id = QuizId;
-
-        quizResponse = await this.HttpClient.PostJsonAsync<QuizResponse>("quizzes/update", Quiz);
-
-        if (quizResponse == null)
-        {
-            this.Navigation.NavigateTo("error");
-        }
-
-        this.Navigation.NavigateTo($"quizzes/details/{QuizId}");
+        await this.QuizService.UpdateAsync(this.Quiz);
     }
 
     async Task DeleteQuiz()
     {
-        await this.HttpClient.DeleteAsync($"quizzes/delete/{QuizId}");
-        this.Navigation.NavigateTo("quizzes/my-quizzes");
+        await this.QuizService.DeleteAsync(this.QuizId);
 
     }
 
     async Task DeleteQuestion()
     {
-        int questionId = await this.HttpClient.GetJsonAsync<int>($"questions/?questionName={CurrentQuestion.Text}&quizId={QuizId}");
-        Console.WriteLine(questionId);
-        await this.HttpClient.DeleteAsync($"questions/delete/{questionId}");
+        if (Quiz.Questions.Count <= 4)
+        {
+            return;
+        }
+
+        await this.QuestionService.DeleteAsync(this.CurrentQuestion.Text, this.QuizId);
+
         this.Quiz.Questions.Remove(CurrentQuestion);
+        if (currentQuestoinPage > 0)
+        {
+            currentQuestoinPage--;
+        }
+        CurrentQuestion = Quiz.Questions[currentQuestoinPage];
+        StateHasChanged();
     }
 
     async Task UpdateQuestion()
     {
-        questionResponse = await this.HttpClient.PostJsonAsync<QuestionResponse>("questions/update", CurrentQuestion);
-
-        foreach (var answer in CurrentQuestion.Answers)
-        {
-            answerResponse = await this.HttpClient.PostJsonAsync<AnswerResponse>("answers/update", answer);
-        }
+        await this.QuestionService.UpdateAsync(CurrentQuestion);
     }
 
     void PreviousQuestion()

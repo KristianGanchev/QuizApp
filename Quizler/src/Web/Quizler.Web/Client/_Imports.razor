@@ -9,15 +9,15 @@
 @using Quizler.Web.Client.Shared
 @using Quizler.Web.Client.Services
 @using Quizler.Web.Client.Extensions
-@using System.Net.Http.Json
+@using Quizler.Web.Client.Pages.Quizzes
 @using Blazored.LocalStorage
 @using Blazored
-@using Blazored.Modal
-@using Blazored.Modal.Services
 @using BlazorInputFile
 
 
 @inject NavigationManager Navigation
 @inject ILocalStorageService storage
-@inject HttpClient HttpClient
-@inject IModalService ModalService
+@inject IQuizzesService QuizService
+@inject IQuestionsService QuestionService
+@inject ICategoriesService CategorieService
+@inject IResultsService ResultsService

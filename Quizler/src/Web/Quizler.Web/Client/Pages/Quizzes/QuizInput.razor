@@ -48,7 +48,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Categories = await this.HttpClient.GetJsonAsync<CategorieResponse[]>("categories/getall");
+        Categories = await this.CategorieService.GetAll<CategorieResponse[]>("categories/getall");
+
     }
 
     async void UploadFile()

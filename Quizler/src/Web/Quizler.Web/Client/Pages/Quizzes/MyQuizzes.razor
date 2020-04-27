@@ -24,8 +24,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var username = await this.storage.GetItemAsync<string>("userName");
-
-        this.Quizzes = await this.HttpClient.GetJsonAsync<List<QuizAllResponse>>($"quizzes/myquizzes/{username}");
+        this.Quizzes = await this.QuizService.GetAllByUser<List<QuizAllResponse>>();
     }
 }

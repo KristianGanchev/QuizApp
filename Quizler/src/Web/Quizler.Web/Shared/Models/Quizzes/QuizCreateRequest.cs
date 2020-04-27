@@ -17,8 +17,6 @@
 
         public string ImageUrl { get; set; }
 
-        public string User { get; set; }
-
         public List<QuestionCreateRequest> Questions { get; set; }
     }
 }

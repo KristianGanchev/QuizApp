@@ -59,7 +59,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.Quiz = await this.HttpClient.GetJsonAsync<QuizPlayResponse>($"quizzes/play/{this.QuizId}");
+        this.Quiz = await this.QuizService.GetById<QuizPlayResponse>(this.QuizId, "quizzes/play/");
         this.Questions = this.Quiz.Questions.ToArray();
 
         CurrentQuestion = Questions[currentPage];
@@ -67,7 +67,6 @@ else
         Username = await this.storage.GetItemAsync<string>("userName");
 
         Result.QuizId = this.QuizId;
-        Result.User = Username;
         Result.MaxPoints = this.Quiz.Questions.Sum(q => q.Points);
         Result.MyAnswers = new List<AnswerResponse>();
     }
@@ -85,12 +84,7 @@ else
 
         if (currentPage == this.Questions.Length - 1)
         {
-            ResultResponse = await this.HttpClient.PostJsonAsync<ResultResponse>("/results/create", this.Result);
-
-            if (ResultResponse == null)
-            {
-                this.Navigation.NavigateTo("error");
-            }
+           ResultResponse = await this.ResultsService.CreateAsync<ResultResponse, ResultRequest>(this.Result);
         }
 
         currentPage++;
