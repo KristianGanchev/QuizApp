@@ -19,5 +19,7 @@
         Task<int> UpdateAsync(string name, int categoryId, string imageUrl, int id);
 
         Task<int> DeleteAsync(int id);
+
+        IEnumerable<T> Search<T>(string searchQuery);
     }
 }

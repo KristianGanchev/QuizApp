@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-<BlazoredModal />
 
 <div class="sidebar">
     <NavMenu />
@@ -8,10 +7,28 @@
 <div class="main">
     <div class="top-row px-4">
         <LoginDisplay />
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <form class="form-inline my-2 my-lg-0">
+            <input @bind-value="SearchQuery" class="form-control mr-sm-2"  placeholder="Find quizz">
+            <button class="btn btn-outline-success my-2 my-sm-0" @onclick="(() => Search())" type="button">Search</button>
+        </form>
     </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
+
+@code
+{
+    public string SearchQuery { get; set; }
+
+    public void Search()
+    {
+        if (string.IsNullOrEmpty(SearchQuery) || string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            return;
+        }
+
+        this.Navigation.NavigateTo($"quizzes/search/{SearchQuery}");
+    }
+}

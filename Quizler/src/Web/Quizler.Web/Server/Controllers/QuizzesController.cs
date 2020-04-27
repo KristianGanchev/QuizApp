@@ -113,5 +113,14 @@
 
             return myQuizzes.ToList();
         }
+
+        [HttpGet("[action]/{searchQuery}")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<QuizAllResponse>> Search(string searchQuery)
+        {
+            var myQuizzes = this.quizzesService.Search<QuizAllResponse>(searchQuery);
+
+            return myQuizzes.ToList();
+        }
     }
 }

@@ -1,0 +1,36 @@
+﻿@page "/quizzes/search/{SearchQuery}"
+
+@if (this.Quizzes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var quiz in this.Quizzes)
+    {
+
+
+        <a href="quizzes/details/@(quiz.Id)">
+            <div class="card m-3" style="width: 12rem;">
+                <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
+                </div>
+            </div>
+        </a>
+        <br />
+        <br />
+    }
+}
+
+@code {
+    [Parameter]
+    public string SearchQuery { get; set; }
+
+    public List<Quizler.Web.Shared.Models.Quizzes.QuizAllResponse> Quizzes = new List<Web.Shared.Models.Quizzes.QuizAllResponse>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.Quizzes = await this.HttpClient.GetJsonAsync<List<Quizler.Web.Shared.Models.Quizzes.QuizAllResponse>>($"quizzes/search/{this.SearchQuery}");
+    }
+}

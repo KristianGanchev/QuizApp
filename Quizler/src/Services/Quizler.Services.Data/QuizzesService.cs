@@ -114,5 +114,12 @@
 
             return result;
         }
+
+        public IEnumerable<T> Search<T>(string searchQuery) 
+        {
+            var quizes = this.quizRepository.All().Where(q => q.Name.Contains(searchQuery)).To<T>();
+
+            return quizes;
+        }
     }
 }
