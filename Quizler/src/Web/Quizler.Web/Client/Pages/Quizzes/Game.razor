@@ -25,7 +25,7 @@ else
     <div class="card mb-3">
         <div class="card-body">
 
-            @foreach (var answer in CurrentQuestion.Answers)
+            @foreach (var answer in CurrentQuestion.Answers.ToList())
             {
                 <button type="button" @onclick="(() => SelectAnswer(answer))" class="btn btn-primary btn-lg btn-block">@answer.Text</button>
                 <br /><br />
@@ -42,12 +42,16 @@ else
 
     public QuizPlayResponse Quiz { get; set; }
 
-    int currentPage = 0;
+    public int currentPage { get; set; }
 
     public QuestionPlayResponse[] Questions { get; set; }
     public QuestionPlayResponse CurrentQuestion { get; set; }
 
     public ResultRequest Result = new ResultRequest();
+
+    public ResultResponse ResultResponse { get; set; }
+
+    AnswerResponse SelectedAnswer = new AnswerResponse();
 
     bool isCorrecr;
 
@@ -70,7 +74,7 @@ else
 
 
 
-    void SelectAnswer(AnswerResponse answer)
+    async Task SelectAnswer(AnswerResponse answer)
     {
         Result.MyAnswers.Add(answer);
 
@@ -81,17 +85,22 @@ else
 
         if (currentPage == this.Questions.Length - 1)
         {
-            this.HttpClient.PostJsonAsync<ResultRequest>("/results/create", this.Result);
+            ResultResponse = await this.HttpClient.PostJsonAsync<ResultResponse>("/results/create", this.Result);
+
+            if (ResultResponse == null)
+            {
+                this.Navigation.NavigateTo("error");
+            }
         }
 
         currentPage++;
 
         if (currentPage == this.Questions.Length)
         {
-            this.Navigation.NavigateTo($"/results/details/{this.QuizId}");
+            this.Navigation.NavigateTo($"results/details/{ResultResponse.Id}");
         }
 
-        if (currentPage <= this.Questions.Length - 1)
+        if (currentPage < this.Questions.Length)
         {
             CurrentQuestion = Questions[currentPage];
         }

@@ -8,6 +8,8 @@
     {
         Task<int> CreateAync(int points, int maxPoints, string studentId, int quizId, List<AnswerResponse> answers);
 
-        T GetByQuizId<T>(int quizId);
+        T GetById<T>(int resultId);
+
+        T GetByUserAndQuizId<T>(string userId, int quizId);
     }
 }

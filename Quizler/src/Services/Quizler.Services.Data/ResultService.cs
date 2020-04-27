@@ -64,9 +64,16 @@
             return result.Id;
         }
 
-        public T GetByQuizId<T>(int quizId)
+        public T GetById<T>(int resultId)
         {
-            var result = this.resultRepository.All().Where(r => r.QuizId == quizId).To<T>().FirstOrDefault();
+            var result = this.resultRepository.All().Where(r => r.Id == resultId).To<T>().FirstOrDefault();
+
+            return result;
+        }
+
+        public T GetByUserAndQuizId<T>(string userId ,int quizId)
+        {
+            var result = this.resultRepository.All().Where(r => r.QuizId == quizId && r.StudentId == userId).OrderByDescending(r => r.CreatedOn).To<T>().FirstOrDefault();
 
             return result;
         }

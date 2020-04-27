@@ -1,6 +1,9 @@
 ﻿namespace Quizler.Web.Shared.Models.Quizzes
 {
-    public class QuizResponse
+    using Quizler.Data.Models;
+    using Quizler.Services.Mapping;
+
+    public class QuizResponse : IMapFrom<Quiz>
     {
         public int Id { get; set; }
 
