@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
 
-    public class BadRequestModel : ProblemDetails
+    public class BadReques : ProblemDetails
     {
         public string Message { get; set; }
     }

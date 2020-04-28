@@ -5,6 +5,8 @@
 @using Quizler.Web.Shared.Models.Answers
 @using Quizler.Web.Client.Pages.Questions
 
+@attribute [Authorize]
+
 <div class="card">
     <div class="card-body">
         <div class="row">
@@ -25,7 +27,7 @@
                     <div class="card-body">
                         <p>Create question</p>
                         <EditForm Model="CurrentQuestion" OnValidSubmit="CreateQuestion">
-                            <DataAnnotationsValidator  />
+                            <DataAnnotationsValidator />
                             <ValidationSummary />
                             <QuestionInput Question="CurrentQuestion" />
                             <button type="submit" class="btn btn-success">Create</button>

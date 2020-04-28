@@ -42,7 +42,7 @@ namespace Quizler.Web.Server.Controllers
 
             if (userManager.Users.Any(u => u.Email == model.Email))
             {
-                return BadRequest(new BadRequestModel
+                return BadRequest(new BadReques
                 {
                     Message = "This e-mail is already taken!"
                 });
@@ -50,7 +50,7 @@ namespace Quizler.Web.Server.Controllers
 
             if (userManager.Users.Any(u => u.UserName == model.Username))
             {
-                return BadRequest(new BadRequestModel
+                return BadRequest(new BadReques
                 {
                     Message = "This username is already taken!"
                 });
@@ -71,9 +71,9 @@ namespace Quizler.Web.Server.Controllers
                 return BadRequest(new RegisterResponseModel { Successful = false, Errors = errors });
             }
 
-            if (model.Role == GlobalConstants.TeacherRoleName)
+            if (model.Role == GlobalConstants.AdministratorRoleName)
             {
-                await this.userManager.AddToRoleAsync(user, GlobalConstants.TeacherRoleName);
+                await this.userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
             }
 
 
@@ -92,7 +92,7 @@ namespace Quizler.Web.Server.Controllers
 
             if (user == null)
             {
-                return BadRequest(new BadRequestModel
+                return BadRequest(new BadReques
                 {
                     Message = "Incorrect e-mail or password."
                 });
@@ -103,7 +103,7 @@ namespace Quizler.Web.Server.Controllers
             if (!result.Result.Succeeded)
             {
 
-                return BadRequest(new BadRequestModel
+                return BadRequest(new BadReques
                 {
                     Message = "Incorrect e-mail or password."
                 });

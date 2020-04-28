@@ -11,7 +11,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    [Authorize]
     public class QuizzesController : ApiController
     {
         private readonly IQuizzesService quizzesService;
@@ -26,7 +25,6 @@
         }
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<ActionResult<QuizResponse>> Create([FromBody] QuizCreateRequest model)
         {
             var userName = this.User.Identity.Name;
@@ -53,7 +51,6 @@
         }
 
         [HttpGet("[action]/{id}")]
-        [AllowAnonymous]
         public ActionResult<QuizEditResponse> Edit(int id)
         {
             var quiz = this.quizzesService.GetById<QuizEditResponse>(id);
@@ -63,7 +60,6 @@
 
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<ActionResult<QuizResponse>> Update([FromBody] QuizEditResponse model)
         {
             string imageUrl = null;
@@ -81,14 +77,12 @@
         }
 
         [HttpDelete("[action]/{id}")]
-        [AllowAnonymous]
         public async Task<int> Delete([FromRoute] int id)
         {
            return await this.quizzesService.DeleteAsync(id);
         }
 
         [HttpGet("[action]/{id}")]
-        [AllowAnonymous]
         public ActionResult<QuizDetailsResponse> Details(int id)
         {
             var quiz = this.quizzesService.GetById<QuizDetailsResponse>(id);
@@ -97,7 +91,6 @@
         }
 
         [HttpGet("[action]/{id}")]
-        [AllowAnonymous]
         public ActionResult<QuizPlayResponse> Play(int id)
         {
             var quiz = this.quizzesService.GetById<QuizPlayResponse>(id);
@@ -106,7 +99,6 @@
         }
 
         [HttpGet("[action]")]
-        [AllowAnonymous]
         public ActionResult<IEnumerable<QuizAllResponse>> MyQuizzes()
         {
             var userName = this.User.Identity.Name;
@@ -119,7 +111,6 @@
         }
 
         [HttpGet("[action]/{searchQuery}")]
-        [AllowAnonymous]
         public ActionResult<IEnumerable<QuizAllResponse>> Search(string searchQuery)
         {
             var myQuizzes = this.quizzesService.Search<QuizAllResponse>(searchQuery);

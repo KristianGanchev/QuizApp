@@ -29,6 +29,7 @@ namespace Quizler.Web.Client
             builder.Services.AddScoped<IQuestionsService, QuestionsService>();
             builder.Services.AddScoped<ICategoriesService, CategoriesService>();
             builder.Services.AddScoped<IResultsService, ResultsServices>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddFileReaderService(options => options.UseWasmSharedBuffer = true);
 
             await builder.Build().RunAsync();

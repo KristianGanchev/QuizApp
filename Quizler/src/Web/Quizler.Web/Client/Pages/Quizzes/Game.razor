@@ -5,6 +5,8 @@
 
 @page "/quizzes/game/{QuizId:int}"
 
+@attribute [Authorize]
+
 @if (this.Questions == null)
 {
     <p><em>Loading...</em></p>
@@ -84,7 +86,7 @@ else
 
         if (currentPage == this.Questions.Length - 1)
         {
-           ResultResponse = await this.ResultsService.CreateAsync<ResultResponse, ResultRequest>(this.Result);
+            ResultResponse = await this.ResultsService.CreateAsync<ResultResponse, ResultRequest>(this.Result);
         }
 
         currentPage++;

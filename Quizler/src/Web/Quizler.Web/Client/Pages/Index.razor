@@ -1,36 +1,42 @@
 ﻿@using Quizler.Web.Shared.Models.Categories
 
 @page "/"
-
-@if (this.categories == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    foreach (var category in this.categories)
-    {
-        <div class="container justify-content-center">
-            <p><h4><strong>@category.Name</strong></h4></p>
-
-            <div class="row">
-                @foreach (var quiz in category.Quizzes)
+    <AuthorizeView>
+        <Authorized>
+            @if (this.categories == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                foreach (var category in this.categories)
                 {
-                <a href="quizzes/details/@(quiz.Id)">
-                    <div class="card m-3" style="width: 12rem;">
-                        <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
+                    <div class="container justify-content-center">
+                        <p><h4><strong>@category.Name</strong></h4></p>
+
+                        <div class="row">
+                            @foreach (var quiz in category.Quizzes)
+                            {
+                                <a href="quizzes/details/@(quiz.Id)">
+                                    <div class="card m-3" style="width: 12rem;">
+                                        <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
                         </div>
                     </div>
-                </a>
+                    <br />
+                    <br />
                 }
-            </div>
-        </div>
-        <br />
-        <br />
-    }
-}
+            }
+        </Authorized>
+        <NotAuthorized>
+            <h1>Welcome</h1>
+        </NotAuthorized>
+    </AuthorizeView>
 
 @code
 {
@@ -39,5 +45,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         categories = await this.CategorieService.GetAll<CategorieWithQuizzesResponse[]>("categories/getallwithquizzes");
+
     }
 }

@@ -50,7 +50,7 @@ namespace Quizler.Web.Client.Services
 
             await _localStorage.SetItemAsync("authToken", loginResult.access_token);
             await _localStorage.SetItemAsync("userName", loginModel.Email);
-            ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginModel.Email);
+            ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginResult.access_token);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.access_token);
 
             return loginResult;

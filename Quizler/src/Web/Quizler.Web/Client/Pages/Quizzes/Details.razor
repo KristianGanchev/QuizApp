@@ -1,5 +1,7 @@
 ﻿@using Quizler.Web.Shared.Models.Quizzes
 
+@attribute [Authorize]
+
 @page "/quizzes/details/{QuizId:int}"
 
 @if (Quiz == null)

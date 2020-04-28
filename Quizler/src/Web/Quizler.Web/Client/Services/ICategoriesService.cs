@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Quizler.Web.Client.Services
+﻿namespace Quizler.Web.Client.Services
 {
+    using Quizler.Web.Shared.Models.Areas.Administration;
+    using System.Threading.Tasks;
+
     public interface ICategoriesService
     {
         Task<T> GetAll<T>(string route);
+
+        Task CreateAsync(CategoryRequest category);
     }
 }

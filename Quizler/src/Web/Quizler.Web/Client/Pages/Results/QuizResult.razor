@@ -4,6 +4,8 @@
 @using Quizler.Web.Shared.Models.Questions
 @using Quizler.Web.Shared.Models.Answers
 
+@attribute [Authorize]
+
 @if (Result == null)
 {
     <p><em>Loading...</em></p>
@@ -61,7 +63,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Result = await this.ResultsService.GetById<ResultDetailsResponse>(this.ResultId ,"results/");
+        Result = await this.ResultsService.GetById<ResultDetailsResponse>(this.ResultId, "results/");
         Questions = Result.Quiz.Questions;
 
         for (int question = 0; question < Questions.Count; question++)

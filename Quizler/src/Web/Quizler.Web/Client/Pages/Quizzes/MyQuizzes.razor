@@ -2,28 +2,30 @@
 
 @page "/quizzes/my-quizzes"
 
-@foreach (var quiz in this.Quizzes)
-{
-    <div class="container justify-content-center">
-        <div class="card w-75">
-            <div class="card-body">
-                <div class="row">
-                    <img src="@quiz.ImageUrl" style="width: 12rem;">
-                    <h3>@quiz.Name</h3>
+@attribute [Authorize]
+
+        @foreach (var quiz in this.Quizzes)
+        {
+            <div class="container justify-content-center">
+                <div class="card w-75">
+                    <div class="card-body">
+                        <div class="row">
+                            <img src="@quiz.ImageUrl" style="width: 12rem;">
+                            <h3>@quiz.Name</h3>
+                        </div>
+                    </div><a class="btn btn-primary" href="/quizzes/edit-quiz/@quiz.Id" role="button">Edit</a>
                 </div>
-            </div><a class="btn btn-primary" href="/quizzes/edit/@quiz.Id" role="button">Edit</a>
-        </div>
-    </div>
-    <br />
-}
+            </div>
+            <br />
+        }
 
 
-@code
+        @code
 {
-    List<QuizAllResponse> Quizzes = new List<QuizAllResponse>();
+            List<QuizAllResponse> Quizzes = new List<QuizAllResponse>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        this.Quizzes = await this.QuizService.GetAllByUser<List<QuizAllResponse>>();
-    }
-}
+            protected override async Task OnInitializedAsync()
+            {
+                this.Quizzes = await this.QuizService.GetAllByUser<List<QuizAllResponse>>();
+            }
+        }

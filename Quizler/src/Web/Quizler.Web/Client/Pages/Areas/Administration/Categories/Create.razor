@@ -1,0 +1,23 @@
+﻿@page "/categories/create"
+
+@using Quizler.Web.Shared.Models.Areas.Administration
+
+<EditForm Model="this.Category" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="category">Email address</label>
+        <InputText Id="category" Class="form-control" @bind-Value="this.Category.Name" />
+        <ValidationMessage For="@(() => this.Category.Name)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    private CategoryRequest Category = new CategoryRequest();
+
+    private async Task Submit() 
+    {
+        await this.CategorieService.CreateAsync(this.Category);
+    }
+}

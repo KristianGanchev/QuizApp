@@ -96,7 +96,7 @@ namespace Quizler.Web.Server
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                AutoMapperConfig.RegisterMappings(typeof(BadRequestModel).GetTypeInfo().Assembly);
+                AutoMapperConfig.RegisterMappings(typeof(BadReques).GetTypeInfo().Assembly);
 
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 

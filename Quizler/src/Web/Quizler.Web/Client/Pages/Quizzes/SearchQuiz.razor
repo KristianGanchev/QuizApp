@@ -1,6 +1,8 @@
-﻿@page "/quizzes/search/{SearchQuery}"
+﻿@page "/search/{SearchQuery}"
 
 @using Quizler.Web.Shared.Models.Quizzes
+
+@attribute [Authorize]
 
 @if (this.Quizzes == null)
 {
@@ -24,6 +26,7 @@ else
         <br />
     }
 }
+
 
 @code {
     [Parameter]
