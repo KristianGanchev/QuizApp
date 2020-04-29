@@ -21,7 +21,7 @@ namespace Quizler.Web.Client
 
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddBlazoredLocalStorage();
-            builder.Services.AddAuthorizationCore();
+            builder.Services.AddAuthorizationCore(options => options.AddPolicy("AdminOnly", polici => polici.RequireClaim("role", "Administrator")));
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddScoped<IAuthService, AuthService>();

@@ -21,5 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Shared\Quizler.Web.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\Areas\Administration\Users\" />
+  </ItemGroup>
 
 </Project>
