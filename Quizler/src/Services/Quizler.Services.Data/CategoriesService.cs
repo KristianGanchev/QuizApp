@@ -35,5 +35,12 @@
 
             return category.Id;
         }
+
+        public T GetByName<T>(string name) 
+        {
+            var category = this.categoriesRepository.All().Where(c => c.Name == name).To<T>().FirstOrDefault();
+
+            return category;
+        }
     }
 }

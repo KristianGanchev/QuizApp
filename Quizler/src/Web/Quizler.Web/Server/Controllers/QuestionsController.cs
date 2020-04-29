@@ -21,7 +21,6 @@
         }
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<ActionResult<QuestionResponse>> Create([FromBody] QuestionCreateRequest model)
         {
             if (!this.ModelState.IsValid)
@@ -35,7 +34,6 @@
         }
 
         [HttpGet("[action]/{id}")]
-        [AllowAnonymous]
         public ActionResult<QuestionEditResponse> Edit(int id)
         {
             var quiz = this.questionsServices.GetByQuizId<QuestionEditResponse>(id);
@@ -44,7 +42,6 @@
         }
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<ActionResult<QuestionResponse>> Update([FromBody] QuestionEditResponse model)
         {
             if (!this.ModelState.IsValid)
@@ -58,14 +55,12 @@
         }
 
         [HttpDelete("[action]/{id}")]
-        [AllowAnonymous]
         public async Task<int> Delete([FromRoute] int id)
         {
             return await this.questionsServices.DeleteAsync(id);
         }
 
         [HttpGet("[action]/{quizId}")]
-        [AllowAnonymous]
         public ActionResult<IEnumerable<QuestionResponse>> All(int quizId)
         {
 
@@ -82,7 +77,6 @@
         }
 
         [HttpGet()]
-        [AllowAnonymous]
         public ActionResult<int> GetId([FromQuery] string questionName, int quizId)
         {
             var questionId = this.questionsServices.GetId(questionName, quizId);

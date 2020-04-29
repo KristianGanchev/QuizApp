@@ -8,5 +8,7 @@
         IEnumerable<T> GetAll<T>();
 
         Task<int> CreateAsync(string name);
+
+        T GetByName<T>(string name);
     }
 }

@@ -8,6 +8,7 @@ namespace Quizler.Web.Client.Services
     using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Authorization;
+    using Quizler.Common;
     using Quizler.Web.Shared.Models.Account;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -40,7 +41,7 @@ namespace Quizler.Web.Client.Services
         public async Task<LoginResponseModel> Login(LoginRequestModel loginModel)
         {
             var loginAsJson = JsonSerializer.Serialize(loginModel);
-            var response = await _httpClient.PostAsync("accounts/login", new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
+            var response = await _httpClient.PostAsync("accounts/login", new StringContent(loginAsJson, Encoding.UTF8, GlobalConstants.JsonContentType));
             var loginResult = JsonSerializer.Deserialize<LoginResponseModel>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (!response.IsSuccessStatusCode)

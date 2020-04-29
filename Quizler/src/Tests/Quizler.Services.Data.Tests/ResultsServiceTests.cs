@@ -91,7 +91,7 @@
         }
 
         [Fact]
-        public void  GetByIdShouldReturnNull()
+        public void GetByIdShouldReturnNull()
         {
             AutoMapperConfig.RegisterMappings(typeof(ResultResponse).GetTypeInfo().Assembly);
 
@@ -124,9 +124,29 @@
         {
             AutoMapperConfig.RegisterMappings(typeof(ResultResponse).GetTypeInfo().Assembly);
 
-            var result = this.service.GetByUserAndQuizId<ResultResponse>("batman" ,100);
+            var result = this.service.GetByUserAndQuizId<ResultResponse>("batman", 100);
 
             Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task DeleteResultShouldDeleteResultSuccesfully()
+        {
+            await this.quizRepository.AddAsync(new Quiz());
+
+            var firstResultId = await this.service.CreateAync(10, 10, "student", 1, new List<AnswerResponse>());
+            var secondResultId = await this.service.CreateAync(20, 20, "new student", 1, new List<AnswerResponse>());
+
+            await this.service.DeleteAsync(firstResultId);
+
+            Assert.Equal(1, this.resultRepository.All().Count());
+            Assert.Equal(2, this.resultRepository.All().First().Id);
+        }
+
+        [Fact]
+        public async Task DeleteAsyncShouldThrowNullReferenceException()
+        {
+            await Assert.ThrowsAsync<NullReferenceException>(() => this.service.DeleteAsync(1));
         }
     }
 }

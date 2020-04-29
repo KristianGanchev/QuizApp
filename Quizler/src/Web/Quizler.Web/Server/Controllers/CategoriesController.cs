@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Quizler.Web.Shared.Models.Quizzes;
 
-    [AllowAnonymous]
     public class CategoriesController : ApiController
     {
         private readonly ICategoriesService categoriesService;

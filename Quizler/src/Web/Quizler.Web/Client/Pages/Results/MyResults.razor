@@ -36,15 +36,6 @@ else
                     <td><button type="button" class="btn btn-danger" @onclick="() => Delete(this.Results[result].Id, result)">Delete</button></td>
                 </tr>
             }
-            @*@foreach (var result in this.Results)
-            {
-                <tr>
-                    <td>@result.Quiz</td>
-                    <td>@result.Points</td>
-                    <td>@result.MaxPoints</td>
-                    <td><button type="button" class="btn btn-danger" @onclick="() => Delete(result.Id)">Delete</button></td>
-                </tr>
-            }*@
         </tbody>
     </table>
 }

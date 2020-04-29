@@ -11,7 +11,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    [AllowAnonymous]
     public class ResultsController : ApiController
     {
         private readonly IResultService resultService;
@@ -28,6 +27,11 @@
         [HttpPost("[action]")]
         public async Task<ActionResult<ResultResponse>> Create([FromBody] ResultRequest resultRequest)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var userName = this.User.Identity.Name;
             var user = this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
 
@@ -62,7 +66,6 @@
         }
 
         [HttpDelete("[action]/{id}")]
-        [AllowAnonymous]
         public async Task<int> Delete([FromRoute] int id)
         {
             return await this.resultService.DeleteAsync(id);

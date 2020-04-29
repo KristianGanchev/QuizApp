@@ -62,6 +62,11 @@
         [HttpPost("[action]")]
         public async Task<ActionResult<QuizResponse>> Update([FromBody] QuizEditResponse model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             string imageUrl = null;
 
             if (model.ImageUrl != null)

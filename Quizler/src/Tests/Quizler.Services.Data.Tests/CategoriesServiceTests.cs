@@ -57,5 +57,28 @@
 
             Assert.Equal(3, categories.Count());
         }
+
+        [Fact]
+        public async Task GetByNameShouldReturnValidCategorie()
+        {
+            await this.service.CreateAsync("Movies");
+
+            AutoMapperConfig.RegisterMappings(typeof(CategorieResponse).GetTypeInfo().Assembly);
+
+            var categorie = this.service.GetByName<CategorieResponse>("Movies");
+
+            Assert.Equal("Movies", categorie.Name);
+        }
+
+        [Fact]
+        public void GetByNameShouldReturnNull()
+        {
+
+            AutoMapperConfig.RegisterMappings(typeof(CategorieResponse).GetTypeInfo().Assembly);
+
+            var categorie = this.service.GetByName<CategorieResponse>("Movies");
+
+            Assert.Null(categorie);
+        }
     }
 }

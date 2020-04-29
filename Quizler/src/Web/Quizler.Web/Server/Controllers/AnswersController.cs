@@ -21,9 +21,13 @@ namespace Quizler.Web.Server.Controllers
         }
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<ActionResult<AnswerResponse>> Create([FromBody] AnswerCreateRequest model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var asnwerId = await this.answersServices.CreateAync(model.Text, model.IsCorrect, model.QuestionId);
 
             return new AnswerResponse { Id = asnwerId, Text = model.Text };
@@ -31,7 +35,6 @@ namespace Quizler.Web.Server.Controllers
 
 
         [HttpPost("[action]")]
-        [AllowAnonymous]
         public async Task<ActionResult<AnswerResponse>> Update([FromBody] AnswerEditResponse model)
         {
             if (!this.ModelState.IsValid)
@@ -45,7 +48,6 @@ namespace Quizler.Web.Server.Controllers
         }
 
         [HttpGet("[action]/{questionId}")]
-        [AllowAnonymous]
         public ActionResult<IEnumerable<AnswerResponse>> GetAll(int questionId)
         {
 
