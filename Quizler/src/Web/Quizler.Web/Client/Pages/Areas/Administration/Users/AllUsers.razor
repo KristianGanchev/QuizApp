@@ -1,0 +1,45 @@
+﻿@page "/admin/users/all"
+
+@using Quizler.Web.Shared.Models.Areas.Administration.User
+
+@attribute [Authorize("AdminOnly")]
+
+@if (this.Users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (this.Users.Count == 0)
+{
+    <p>No registered users</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int user = 0; user < this.Users.Count; user++)
+            {
+                <tr>
+                    <th scope="row">@(user+1)</th>
+                    <td>@this.Users[user].Username</td>
+                    <td>@this.Users[user].Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<UserResponse> Users { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Users = await this.UserService.GetAll<List<UserResponse>>();
+    }
+}

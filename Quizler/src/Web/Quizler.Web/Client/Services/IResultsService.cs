@@ -10,5 +10,9 @@ namespace Quizler.Web.Client.Services
         Task<TResponse> CreateAsync<TResponse, TRequiest>(TRequiest model);
 
         Task<T> GetById<T>(int resultId, string route);
+
+        Task<T> GetMyResults<T>();
+
+        Task DeleteAsync(int resultId);
     }
 }

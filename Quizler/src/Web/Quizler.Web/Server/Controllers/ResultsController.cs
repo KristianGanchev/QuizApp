@@ -7,6 +7,7 @@
     using Quizler.Services.Data;
     using Quizler.Web.Shared.Models.Quizzes;
     using Quizler.Web.Shared.Models.Results;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -25,10 +26,10 @@
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<ResultResponse>> Create([FromBody] ResultRequest resultRequest) 
+        public async Task<ActionResult<ResultResponse>> Create([FromBody] ResultRequest resultRequest)
         {
             var userName = this.User.Identity.Name;
-            var user =  this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
+            var user = this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
 
             var quiz = this.quizzesService.GetById<QuizPlayResponse>(resultRequest.QuizId);
 
@@ -40,12 +41,31 @@
         }
 
         [HttpGet("{resultId}")]
-        public  ActionResult<ResultDetailsResponse> GetById(int resultId)
+        public ActionResult<ResultDetailsResponse> GetById(int resultId)
         {
 
-            var result =  this.resultService.GetById<ResultDetailsResponse>(resultId);
+            var result = this.resultService.GetById<ResultDetailsResponse>(resultId);
 
             return result;
+        }
+
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<ResultsMyResponse>> UserResults() 
+        {
+            var userName = this.User.Identity.Name;
+            var user = this.userManager.Users.SingleOrDefault(u => u.UserName == userName);
+
+
+            var results = this.resultService.GetAllByUser<ResultsMyResponse>(user.Id).ToList();
+
+            return results;
+        }
+
+        [HttpDelete("[action]/{id}")]
+        [AllowAnonymous]
+        public async Task<int> Delete([FromRoute] int id)
+        {
+            return await this.resultService.DeleteAsync(id);
         }
     }
 }

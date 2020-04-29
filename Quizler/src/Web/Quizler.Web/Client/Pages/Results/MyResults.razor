@@ -1,0 +1,67 @@
+﻿@page "/results/my-results"
+
+@using Quizler.Web.Shared.Models.Results
+
+@attribute [Authorize]
+
+@if (this.Results == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (this.Results.Count == 0)
+{
+    <p>No results</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Quiz</th>
+                <th scope="col">Points</th>
+                <th scope="col">Max points</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < this.Results.Count; i++)
+            {
+                int result = i;
+
+                <tr>
+                    <th scope="row">@(result+1)</th>
+                    <td>@this.Results[result].Quiz</td>
+                    <td>@this.Results[result].Points</td>
+                    <td>@this.Results[result].MaxPoints</td>
+                    <td><button type="button" class="btn btn-danger" @onclick="() => Delete(this.Results[result].Id, result)">Delete</button></td>
+                </tr>
+            }
+            @*@foreach (var result in this.Results)
+            {
+                <tr>
+                    <td>@result.Quiz</td>
+                    <td>@result.Points</td>
+                    <td>@result.MaxPoints</td>
+                    <td><button type="button" class="btn btn-danger" @onclick="() => Delete(result.Id)">Delete</button></td>
+                </tr>
+            }*@
+        </tbody>
+    </table>
+}
+
+@code
+ {
+    List<ResultsMyResponse> Results { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Results = new List<ResultsMyResponse>();
+        this.Results = await this.ResultsService.GetMyResults<List<ResultsMyResponse>>();
+    }
+
+    protected async Task Delete(int Id, int index) 
+    {
+        await this.ResultsService.DeleteAsync(Id);
+        this.Results.RemoveAt(index);
+    }
+}

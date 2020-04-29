@@ -2,7 +2,6 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @Username!
         <a href="LogOut">Log out</a>
     </Authorized>
     <NotAuthorized>
@@ -11,12 +10,3 @@
     </NotAuthorized>
 </AuthorizeView>
 
-@code
-{
-    public string Username;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Username = await this.storage.GetItemAsync<string>("userName");
-    }
-}

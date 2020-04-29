@@ -11,5 +11,9 @@
         T GetById<T>(int resultId);
 
         T GetByUserAndQuizId<T>(string userId, int quizId);
+
+        IEnumerable<T> GetAllByUser<T>(string userId);
+
+        Task<int> DeleteAsync(int id);
     }
 }

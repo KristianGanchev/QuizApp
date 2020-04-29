@@ -36,5 +36,18 @@ namespace Quizler.Web.Client.Services
 
             return result;
         }
+
+        public async Task<T> GetMyResults<T>()
+        {
+            var results = await this.httpClient.GetJsonAsync<T>("/results/userresults");
+
+            return results;
+        }
+
+        public async Task DeleteAsync(int resultId)
+        {
+            await httpClient.DeleteAsync($"results/delete/{resultId}");
+            this.navigationManager.NavigateTo("results/my-results");
+        }
     }
 }

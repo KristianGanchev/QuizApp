@@ -77,5 +77,29 @@
 
             return result;
         }
+
+        public IEnumerable<T> GetAllByUser<T>(string userId) 
+        {
+            var results = this.resultRepository.All().Where(r => r.StudentId == userId).OrderByDescending(r => r.CreatedOn);
+
+            return results.To<T>().ToList();
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var result = await this.resultRepository.GetByIdWithDeletedAsync(id);
+            var answersResults = this.answerResult.All().Where(a => a.ResultId == id);
+
+            foreach (var asnwersResults in answersResults)
+            {
+                this.answerResult.Delete(asnwersResults);
+            }
+
+            this.resultRepository.Delete(result);
+
+            var deletedResult = await this.resultRepository.SaveChangesAsync();
+
+            return deletedResult;
+        }
     }
 }

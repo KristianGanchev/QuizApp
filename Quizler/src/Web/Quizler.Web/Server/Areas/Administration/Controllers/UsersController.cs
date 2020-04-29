@@ -7,26 +7,27 @@
     using Quizler.Services.Mapping;
     using Quizler.Web.Server.Controllers;
     using Quizler.Web.Shared.Models.Account;
+    using Quizler.Web.Shared.Models.Areas.Administration.User;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     [Route("admin/[controller]")]
-    public class UserController : ApiController
+    public class UsersController : ApiController
     {
         private readonly UserManager<ApplicationUser> userManager;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }
 
         [HttpGet("[action]")]
-        public  ActionResult<IEnumerable<LoginResponseModel>> All() 
+        public  ActionResult<IEnumerable<UserResponse>> All() 
         {
             if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
-                return this.userManager.Users.To<LoginResponseModel>().ToList();
+                return this.userManager.Users.OrderByDescending(u => u.CreatedOn).To<UserResponse>().ToList();
             }
 
             return Unauthorized();
