@@ -9,21 +9,29 @@
 
 @if (this.Questions == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 }
 else
 {
-    <div class="row">
-
-
-        <h1 class="text-center"><strong>Question: @(currentPage+1) / @(this.Questions.Length) @this.CurrentQuestion.Text</strong></h1>
-        <h1 class="text-center"><strong>Points: @Result.Points / @Result.MaxPoints</strong></h1>
-
+    <div class="d-flex justify-content-between">
+        <div>
+            <button disabled class="btn-info"><h3><strong>Question: @(currentPage+1) / @(this.Questions.Length) </strong></h3></button>
+        </div>
+        <div>
+            <button disabled class="btn-warning">  <h3><strong>@this.CurrentQuestion.Text</strong></h3></button>
+        </div>
+        <div>
+            <button disabled class="btn-info"> <h3 class="text-center"><strong>Points: @Result.Points / @Result.MaxPoints</strong></h3></button>
+        </div>
     </div>
 
     <br />
     <br />
-
+    <hr />
     <div class="card mb-3">
         <div class="card-body">
 

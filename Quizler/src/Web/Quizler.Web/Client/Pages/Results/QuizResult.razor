@@ -8,44 +8,62 @@
 
 @if (Result == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 }
 else
 {
-    <div class="alert alert-success" role="alert">
-        <div class="justify-content-center">
-            <p><strong>Quiz "@Result.Quiz.Name" copleted with @Result.Points of Max @Result.MaxPoints</strong></p>
+    <div class="d-flex justify-content-center">
+        <div class="card w-75">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <button type="button" class="btn btn-warning btn-lg btn-block"> <p><strong>Quiz "@Result.Quiz.Name" completed with @Result.Points of Max @Result.MaxPoints</strong></p></button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="card w-75">
+                        <div class="card-body">
+                            @foreach (var question in Questions)
+                            {
+                                <button type="button" class="btn btn-info btn-lg btn-block">@question.Text</button>
+
+                                <br />
+
+                                foreach (var answer in question.Answers)
+                                {
+                                    if (answer.IsSelected && answer.IsCorrect)
+                                    {
+                                        style = "success";
+                                    }
+                                    else if (answer.IsSelected && answer.IsCorrect == false)
+                                    {
+                                        style = "danger";
+                                    }
+                                    else if (answer.IsCorrect)
+                                    {
+                                        style = "success";
+                                    }
+                                    else
+                                    {
+                                        style = "primary";
+                                    }
+
+                                    <div class="alert alert-@style" role="alert">
+                                        @answer.Text
+                                    </div>
+
+                                    <br />
+                                }
+                                <hr />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    foreach (var question in Questions)
-    {
-        @question.Text
-
-        foreach (var answer in question.Answers)
-        {
-            if (answer.IsSelected && answer.IsCorrect)
-            {
-                style = "success";
-            }
-            else if (answer.IsSelected && answer.IsCorrect == false)
-            {
-                style = "danger";
-            }
-            else if (answer.IsCorrect)
-            {
-                style = "success";
-            }
-            else
-            {
-                style = "primary";
-            }
-
-            <div class="alert alert-@style" role="alert">
-                @answer.Text
-            </div>
-        }
-    }
 }
 
 

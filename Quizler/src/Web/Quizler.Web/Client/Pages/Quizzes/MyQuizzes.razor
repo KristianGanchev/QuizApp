@@ -4,32 +4,46 @@
 
 @attribute [Authorize]
 
-        @foreach (var quiz in this.Quizzes)
-        {
-            <div class="container justify-content-center">
-                <div class="card w-75">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <img src="@quiz.ImageUrl" style="width: 12rem;">
-                            </div>
-                            <div class="col">
-                                <h3>@quiz.Name</h3>
-                            </div>
-                        </div>
-                    </div><a class="btn btn-primary" href="quizzes/edit-quiz/@quiz.Id" role="button">Edit</a>
-                </div>
-            </div>
-            <br />
-        }
-
-
-        @code
+@if (!this.Quizzes.Any())
 {
-            List<QuizAllResponse> Quizzes = new List<QuizAllResponse>();
+    <div class="d-flex justify-content-center">
+        <div class="card w-75">
+            <div class="card-body">
+                <h5 class="card-title">No quizzes</h5>
+                <a href="quizzes/create" class="btn btn-primary">Create your first quiz</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (var quiz in this.Quizzes)
+    {
+        <div class="container justify-content-center">
+            <div class="card w-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <img src="@quiz.ImageUrl" style="width: 12rem;">
+                        </div>
+                        <div class="col">
+                            <h3>@quiz.Name</h3>
+                        </div>
+                    </div>
+                </div><a class="btn btn-primary" href="quizzes/edit-quiz/@quiz.Id" role="button">Edit</a>
+            </div>
+        </div>
+        <br />
+    }
+}
 
-            protected override async Task OnInitializedAsync()
-            {
-                this.Quizzes = await this.QuizService.GetAllByUser<List<QuizAllResponse>>();
-            }
-        }
+
+@code
+{
+    List<QuizAllResponse> Quizzes = new List<QuizAllResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Quizzes = await this.QuizService.GetAllByUser<List<QuizAllResponse>>();
+    }
+}

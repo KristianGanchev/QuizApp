@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Quizler.Web.Shared.Attributes
 {
-    public class AsnwerIsCorrectValidation : ValidationAttribute
+    public class AsnwerIsCorrectCreateValidation : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

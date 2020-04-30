@@ -4,16 +4,23 @@
 
 
 @attribute [Authorize("AdminOnly")]
-<EditForm Model="this.Category" OnValidSubmit="Submit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label for="category">Category name</label>
-        <InputText Id="category" Class="form-control" @bind-Value="this.Category.Name" />
-        <ValidationMessage For="@(() => this.Category.Name)" />
+
+<div class="d-flex justify-content-center">
+    <div class="card w-75">
+        <div class="card-body">
+            <EditForm Model="this.Category" OnValidSubmit="Submit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="form-group">
+                    <label for="category">Category name</label>
+                    <InputText Id="category" Class="form-control" @bind-Value="this.Category.Name" />
+                    <ValidationMessage For="@(() => this.Category.Name)" />
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </EditForm>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
+</div>
 
 @code {
     private CategoryRequest Category = new CategoryRequest();

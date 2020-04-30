@@ -19,8 +19,8 @@
 
         public int QuizId { get; set; }
 
-        [AnswerLengthValidation]
-        [AsnwerIsCorrectValidation]
+        [AnswerLengthCreateValidation]
+        [AsnwerIsCorrectCreateValidation]
         [Display(Name = "Answers")]
         public List<AnswerCreateRequest> Answers { get; set; }
     }

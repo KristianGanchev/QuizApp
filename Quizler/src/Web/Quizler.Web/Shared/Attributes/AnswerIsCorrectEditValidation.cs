@@ -4,15 +4,15 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
-    public class AnswerLengthValidation : ValidationAttribute
+    public class AnswerIsCorrectEditValidation : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var question = (QuestionCreateRequest)validationContext.ObjectInstance;
+            var question = (QuestionEditResponse)validationContext.ObjectInstance;
 
-            if (question.Answers.Any(a => string.IsNullOrEmpty(a.Text))  || question.Answers.Any(a => string.IsNullOrWhiteSpace(a.Text)))
+            if (question.Answers.Any(a => a.IsCorrect) == false)
             {
-                return new ValidationResult("Asnwers must be atleast 4!");
+                return new ValidationResult("Select a correct answer");
             }
 
             return ValidationResult.Success;
