@@ -8,5 +8,7 @@
         Task<T> GetAll<T>(string route);
 
         Task CreateAsync(CategoryRequest category);
+
+        Task<T> GetByName<T>(string route);
     }
 }

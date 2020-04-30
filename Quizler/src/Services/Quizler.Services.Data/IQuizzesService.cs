@@ -21,5 +21,7 @@
         Task<int> DeleteAsync(int id);
 
         IEnumerable<T> Search<T>(string searchQuery);
+
+        IEnumerable<T> GetAllByCategory<T>(string categoryName);
     }
 }

@@ -1,42 +1,67 @@
 ﻿@using Quizler.Web.Shared.Models.Categories
 
-@page "/"
-    <AuthorizeView>
-        <Authorized>
-            @if (this.categories == null)
-            {
-                <p><em>Loading...</em></p>
-            }
-            else
-            {
-                foreach (var category in this.categories)
-                {
-                    <div class="container justify-content-center">
-                        <p><h4><strong>@category.Name</strong></h4></p>
 
-                        <div class="row">
-                            @foreach (var quiz in category.Quizzes)
-                            {
-                                <a href="quizzes/details/@(quiz.Id)">
-                                    <div class="card m-3" style="width: 12rem;">
-                                        <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
-                                        </div>
-                                    </div>
-                                </a>
-                            }
+@page "/"
+<AuthorizeView>
+    <Authorized>
+        @if (this.categories == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            foreach (var category in this.categories)
+            {
+                if (!category.Quizzes.Any())
+                {
+                    continue;
+                }
+
+                <div class="container justify-content-center">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p><h4><strong>@category.Name</strong></h4></p>
+                        </div>
+                        <div>
+                            <a href="category/@category.Name/all-quizzes" class="btn btn-warning" role="button" aria-pressed="true">See more</a>
                         </div>
                     </div>
-                    <br />
-                    <br />
-                }
+
+                    <div class="row">
+                        @foreach (var quiz in category.Quizzes)
+                        {
+                            <a href="quizzes/details/@(quiz.Id)">
+                                <div class="card m-3" style="width: 12rem;">
+                                    <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <span class="badge badge-warning">@quiz.Questions Qs</span>
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-info">@quiz.Plays Plays</span>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+                <br />
+                <br />
             }
-        </Authorized>
-        <NotAuthorized>
-            <h1>Welcome</h1>
-        </NotAuthorized>
-    </AuthorizeView>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Quizler!</h1>
+            <p class="lead">Strart learning new thing by havig fun.</p>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code
 {
@@ -44,7 +69,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await this.CategorieService.GetAll<CategorieWithQuizzesResponse[]>("categories/getallwithquizzes");
-
+        if (await this.UserService.IsLoggedIn())
+        {
+            categories = await this.CategorieService.GetAll<CategorieWithQuizzesResponse[]>("categories/getallwithquizzes");
+        }
     }
 }

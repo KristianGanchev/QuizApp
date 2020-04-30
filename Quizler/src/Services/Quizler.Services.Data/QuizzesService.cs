@@ -82,6 +82,13 @@
             return query.To<T>().ToList();
         }
 
+        public IEnumerable<T> GetAllByCategory<T>(string categoryName)
+        {
+            IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.Category.Name == categoryName).OrderByDescending(q => q.CreatedOn);
+
+            return query.To<T>().ToList();
+        }
+
         public IEnumerable<T> GetAllByUser<T>(string userId)
         {
             IQueryable<Quiz> query = this.quizRepository.All().Where(q => q.CreatorId == userId).OrderByDescending(q => q.CreatedOn.Day);

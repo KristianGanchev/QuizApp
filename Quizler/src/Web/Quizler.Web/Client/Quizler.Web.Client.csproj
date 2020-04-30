@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\%2540fontawesome\**" />
+    <Content Remove="wwwroot\lib\%2540fontawesome\**" />
+    <EmbeddedResource Remove="wwwroot\lib\%2540fontawesome\**" />
+    <None Remove="wwwroot\lib\%2540fontawesome\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="2.1.5" />
     <PackageReference Include="Blazored.Modal" Version="4.1.0" />
     <PackageReference Include="BlazorInputFile" Version="0.1.0-preview-00002" />

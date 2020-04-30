@@ -1,0 +1,52 @@
+﻿@page "/category/{Name}/all-quizzes"
+
+@using Quizler.Web.Shared.Models.Categories
+
+
+@if (this.Categorie == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<div class="container justify-content-center">
+    <p><h4><strong>@Categorie.Name</strong></h4></p>
+    <div class="row">
+        @foreach (var quiz in Categorie.Quizzes)
+        {
+            <a href="quizzes/details/@(quiz.Id)">
+                <div class="card m-3" style="width: 12rem;">
+                    <img src="@quiz.ImageUrl" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="badge badge-warning">@quiz.Questions Qs</span>
+                            </div>
+                            <div>
+                                <span class="badge badge-info">@quiz.Plays Plays</span>
+                            </div>
+                        </div>
+                        <hr />
+                        <h6 class="card-title">Quiz name: <strong>@quiz.Name</strong></h6>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+    <br />
+    <br />
+}
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    public CategorieWithQuizzesResponse Categorie { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categorie = await this.CategorieService.GetAll<CategorieWithQuizzesResponse>($"categories/getallquizzes/{this.Name}");
+
+    }
+}

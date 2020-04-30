@@ -6,7 +6,6 @@
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
-<h1>Login</h1>
 
 @if (ShowErrors)
 {
@@ -15,25 +14,34 @@
     </div>
 }
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Please enter your details</h5>
-        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+<div class="container justify-content-center">
+    <div class="card w-75">
+        <div class="card-body">
+            <h5 class="card-title">Please enter your details</h5>
+            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
 
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
-                <ValidationMessage For="@(() => loginModel.Email)" />
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <InputText Id="password" type="password" Class="form-control" @bind-Value="loginModel.Password" />
-                <ValidationMessage For="@(() => loginModel.Password)" />
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </EditForm>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
+                    <ValidationMessage For="@(() => loginModel.Email)" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <InputText Id="password" type="password" Class="form-control" @bind-Value="loginModel.Password" />
+                    <ValidationMessage For="@(() => loginModel.Password)" />
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-success">Login</button>
+                        <hr />
+                        <p>Dont`t have an account</p>
+                        <a role="button" href="register" class="btn btn-primary">Register</a>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
     </div>
 </div>
 
@@ -42,6 +50,15 @@
     private LoginRequestModel loginModel = new LoginRequestModel();
     private bool ShowErrors;
     private string Error = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (await this.UserService.IsLoggedIn())
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
 
     private async Task HandleLogin()
     {

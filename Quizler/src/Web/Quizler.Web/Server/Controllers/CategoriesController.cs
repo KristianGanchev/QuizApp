@@ -42,5 +42,18 @@
 
             return categories.ToArray();
         }
+        [HttpGet("[action]/{categoryName}")]
+        public ActionResult<CategorieWithQuizzesResponse> GetAllQuizzes(string categoryName)
+        {
+
+            var category = this.categoriesService.GetByName<CategorieWithQuizzesResponse>(categoryName);
+
+
+            var quizzes = this.quizzesService.GetAllByCategory<QuizAllResponse>(category.Name);
+
+            category.Quizzes = quizzes;
+
+            return category;
+        }
     }
 }

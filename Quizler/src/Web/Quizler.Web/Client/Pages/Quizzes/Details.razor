@@ -14,13 +14,48 @@ else
         <div class="card w-75">
             <div class="card-body">
                 <div class="row">
-                    <img src="@this.Quiz.ImageUrl" style="width: 12rem;"/>
-                    <h3>@this.Quiz.Name</h3>
+                    <div class="col-6 col-sm-3">
+                        <img src="@this.Quiz.ImageUrl" style="width: 12rem;" />
+                    </div>
+                    <div class="col">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-4">
+                                    <h3>@this.Quiz.Name</h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row justify-content-around">
+                                <div class="col-4">
+                                    <span class="badge badge-success">@this.Quiz.Category</span>
+                                </div>
+                                <div class="col-4">
+                                    <span class="badge badge-info">@this.Quiz.Questions Questions</span>
+                                </div>
+                                <div class="col-4">
+                                    <span class="badge badge-warning">@this.Quiz.Plays Plays</span>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row justify-content-end">
+                                <div class="col-4">
+                                    <a href="quizzes/game/@(this.QuizId)" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Play</a>
+                                </div>
+                                @if (IsCreator)
+                                {
+                                    <div class="col-4">
+                                        <a href="quizzes/edit-quiz/@(this.QuizId)" class="btn btn-warning" tabindex="-1" role="button" aria-disabled="true">Edit</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <span class="badge badge-primary">Creator: @this.Quiz.Creator</span>
             </div>
         </div>
     </div>
-   <a href="quizzes/game/@(this.QuizId)" class="btn btn-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Play</a>
+
 }
 
 
@@ -30,8 +65,12 @@ else
 
     public QuizDetailsResponse Quiz { get; set; }
 
+    public bool IsCreator { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         this.Quiz = await this.QuizService.GetById<QuizDetailsResponse>(QuizId, "quizzes/details/");
+
+        IsCreator = await this.UserService.IsCreator(Quiz.Creator);
     }
 }

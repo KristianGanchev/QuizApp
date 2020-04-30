@@ -30,6 +30,34 @@ namespace Quizler.Web.Client.Services
 
         }
 
+        public async Task<bool> IsLoggedIn()
+        {
+            var authState = await this.authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            
+            if (user.Identity.IsAuthenticated)
+            {
+                return true;
+            }
+
+
+            return false;
+        }
+
+        public async Task<bool> IsCreator(string creatorName)
+        {
+            var authState = await this.authenticationStateProvider.GetAuthenticationStateAsync();
+            var userName = authState.User.Claims.Where(c => c.Type == "unique_name").FirstOrDefault().Value;
+
+            if (userName == creatorName)
+            {
+                return true;
+            }
+
+            return false; ;
+
+        }
+
         public async Task<T> GetAll<T>() 
         {
             var users = await this.httpClient.GetJsonAsync<T>("admin/users/all");

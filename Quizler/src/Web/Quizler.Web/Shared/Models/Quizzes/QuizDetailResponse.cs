@@ -16,6 +16,8 @@
 
         public int Questions { get; set; }
 
+        public string Creator { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Quiz, QuizDetailsResponse>()
@@ -27,6 +29,10 @@
                 .ForMember(q => q.Questions, options => 
                 {
                     options.MapFrom(q => q.Questions.Count);
+                })
+                .ForMember(q => q.Creator, options =>
+                {
+                    options.MapFrom(q => q.Creator.UserName);
                 });
         }
     }

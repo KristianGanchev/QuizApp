@@ -1,6 +1,6 @@
 ﻿namespace Quizler.Web.Shared.Models.Quizzes
 {
-    using Microsoft.AspNetCore.Http;
+    using Quizler.Web.Shared.Attributes;
     using Quizler.Web.Shared.Models.Questions;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -17,6 +17,8 @@
 
         public string ImageUrl { get; set; }
 
+        [QuetionLengthValidation]
+        [Display(Name = "Questions")]
         public List<QuestionCreateRequest> Questions { get; set; }
     }
 }

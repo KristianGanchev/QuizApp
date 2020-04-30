@@ -27,6 +27,13 @@ namespace Quizler.Web.Client.Services
             return categories;
         }
 
+        public async Task<T> GetByName<T>(string route)
+        {
+            var category = await this.httpClient.GetJsonAsync<T>(route);
+
+            return category;
+        }
+
         public async Task CreateAsync(CategoryRequest category) 
         {
             var response = await this.httpClient.PostJsonAsync<CategoryResponse>("admin/categories/create", category);
