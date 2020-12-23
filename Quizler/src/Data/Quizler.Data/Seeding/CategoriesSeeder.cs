@@ -19,7 +19,7 @@
 
             var categories = new List<Category>
             {
-                new Category { Name = "Mathemarics" },
+                new Category { Name = "Mathematics" },
                 new Category { Name = "English" },
                 new Category { Name = "Computers" },
                 new Category { Name = "Science" },
@@ -29,6 +29,7 @@
             };
 
             await dbContext.Categories.AddRangeAsync(categories);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -52,9 +52,6 @@
                             this.navigationManager.NavigateTo("error");
                         }
                     }
-
-
-
                 }
 
                 this.navigationManager.NavigateTo($"quizzes/my-quizzes");

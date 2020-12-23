@@ -13,6 +13,8 @@
         public string Name { get; set; }
 
         [Required]
+        [CategoryRequiredValidation]
+        [Display(Name = "Category")]
         public int CategorieId { get; set; }
 
         public string ImageUrl { get; set; }

@@ -23,15 +23,15 @@
         {
             if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
-                var categorie = this.categoriesService.GetByName<CategoryResponse>(inputModel.Name);
+                //var categorie = this.categoriesService.GetByName<CategoryResponse>(inputModel.Name);
 
-                if (categorie != null)
-                {
-                    return BadRequest(new BadRequest
-                    {
-                        Message = "This category allready exist!"
-                    }); ;
-                }
+                //if (categorie != null)
+                //{
+                //    return BadRequest(new BadRequest
+                //    {
+                //        Message = "This category allready exist!"
+                //    }); ;
+                //}
 
                 if (!this.ModelState.IsValid)
                 {
